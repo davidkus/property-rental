@@ -9,7 +9,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 
-@WebFilter(filterName = "OwnerFilter", urlPatterns = {"/*"})
+@WebFilter(filterName = "OwnerFilter", urlPatterns = {"/owner/*"})
 public class OwnerFilter implements Filter {
     
     // The filter configuration object we are associated with.  If
@@ -34,7 +34,7 @@ public class OwnerFilter implements Filter {
         FilterChain chain
     ) throws IOException, ServletException {
         
-        filterConfig.getServletContext().log("HEYA");
+        chain.doFilter(request, response);
     }
 
     /**

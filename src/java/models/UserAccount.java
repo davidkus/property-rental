@@ -1,6 +1,5 @@
 package models;
 
-import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -13,18 +12,28 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
+import javax.persistence.OneToOne;
+import javax.persistence.Query;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="user_accounts_5939559")
-public class UserAccount implements Serializable {
-
+public class UserAccount extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String username;
+    private String firstname;
+    private String lastname;
+    private String email;
+    @Lob
+    private byte[] password; // salted + hashed password
+    @Lob
+    private byte[] salt; // the salt used for this account
+    @OneToOne
+    private Address address;
 
     public String getUsername() {
         return username;
@@ -73,13 +82,14 @@ public class UserAccount implements Serializable {
     public void setSalt(byte[] salt) {
         this.salt = salt;
     }
-    private String firstname;
-    private String lastname;
-    private String email;
-    @Lob
-    private byte[] password; // salted + hashed password
-    @Lob
-    private byte[] salt; // the salt used for this account
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
 
     public Long getId() {
         return id;
@@ -106,7 +116,10 @@ public class UserAccount implements Serializable {
     }
     
     public static UserAccount findByUsername(String username, EntityManager em) {
-        return null;
+        Query query = em.createQuery("SELECT ua FROM user_accounts_5939559 ua WHERE ua.username = :username");
+        query.setParameter("username", username);
+        UserAccount result = performQuery(UserAccount.class, query);
+        return result;
     }
 
     @Override
