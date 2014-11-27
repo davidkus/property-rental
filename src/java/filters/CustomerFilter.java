@@ -8,22 +8,17 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import models.User;
 
-@WebFilter(filterName = "AuthenticationFilter",
-           urlPatterns = {"/owner/*", "/customer/*", "/agent/*", "/user/*"})
-public class AuthenticationFilter implements Filter {
-
+@WebFilter(filterName = "CustomerFilter", urlPatterns = {"/customer/*"})
+public class CustomerFilter implements Filter {
+    
     // The filter configuration object we are associated with.  If
     // this value is null, this filter instance is not currently
     // configured. 
     private FilterConfig filterConfig = null;
     
-    public AuthenticationFilter() {}    
-    
+    public CustomerFilter() {}    
+
     /**
      *
      * @param request The servlet request we are processing
@@ -33,25 +28,13 @@ public class AuthenticationFilter implements Filter {
      * @exception IOException if an input/output error occurs
      * @exception ServletException if a servlet error occurs
      */
-    @Override
     public void doFilter(
         ServletRequest request,
         ServletResponse response,
         FilterChain chain
     ) throws IOException, ServletException {
-
-        HttpServletRequest req = (HttpServletRequest) request;
-        HttpServletResponse res = (HttpServletResponse) response;
-        HttpSession ses = req.getSession(false);
-        User user = (User)ses.getAttribute("user");
         
-        if (ses == null || user == null ) {
-            String loginURL = req.getContextPath() + "/login.xhtml";
-            res.sendRedirect(loginURL);
-        } else {
-            chain.doFilter(request, response);
-        }  
-            
+        chain.doFilter(request, response);
     }
 
     /**

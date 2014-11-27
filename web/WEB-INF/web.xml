@@ -9,6 +9,14 @@
         <url-pattern />
     </filter-mapping>
     <filter-mapping>
+        <filter-name>AgentFilter</filter-name>
+        <url-pattern />
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>CustomerFilter</filter-name>
+        <url-pattern />
+    </filter-mapping>
+    <filter-mapping>
         <filter-name>OwnerFilter</filter-name>
         <url-pattern />
     </filter-mapping>

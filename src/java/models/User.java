@@ -29,6 +29,14 @@ public class User extends BaseEntity {
         this.id = id;
     }
 
+    public UserAccount getUserAccount() {
+        return userAccount;
+    }
+
+    public void setUserAccount(UserAccount userAccount) {
+        this.userAccount = userAccount;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;

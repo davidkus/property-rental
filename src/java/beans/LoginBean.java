@@ -2,6 +2,7 @@ package beans;
 
 import javax.annotation.Resource;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.persistence.EntityManager;
@@ -60,7 +61,7 @@ public class LoginBean {
             if (account.checkPassword(password)) {
                 //login ok - set user in session context
                 HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
-                session.setAttribute("User", account);
+                session.setAttribute("user", account.getUser());
                 status="Login Successful - " + "Welcome " + account.getFirstname(); 
             } else {
                status="Invalid Login, Please Try again"; 

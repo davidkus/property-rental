@@ -3,7 +3,9 @@ package models;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.util.Arrays;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.Entity;
@@ -34,6 +36,8 @@ public class UserAccount extends BaseEntity {
     private byte[] salt; // the salt used for this account
     @OneToOne
     private Address address;
+    @OneToOne(mappedBy = "userAccount")
+    private User user;
 
     public String getUsername() {
         return username;
@@ -91,12 +95,39 @@ public class UserAccount extends BaseEntity {
         this.address = address;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
+    }
+    
+    public boolean setPassword(String password) {
+        try {
+            // randomly generate salt value
+            final Random r = new SecureRandom();
+            byte[] salt = new byte[32];
+            r.nextBytes(salt);
+            String saltString = new String(salt, "UTF-8");
+            // hash password using SHA-256 algorithm
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            String saltedPass = saltString+password;
+            byte[] passhash = digest.digest(saltedPass.getBytes("UTF-8"));
+            this.setSalt(salt);
+            this.setPassword(passhash);
+            return true;
+        } catch (UnsupportedEncodingException | NoSuchAlgorithmException | RuntimeException ex) {
+            return false;
+        }
     }
     
     public boolean checkPassword(String password) {

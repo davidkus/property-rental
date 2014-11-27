@@ -27,7 +27,7 @@ public class Property extends BaseEntity {
     private Double rent;
     @OneToOne
     private Address address; 
-    @OneToMany(mappedBy="properties_5939559",targetEntity=Photo.class, fetch=FetchType.EAGER)
+    @OneToMany(fetch=FetchType.EAGER)
     private List<Photo> photos;
     
     public Long getId() {
