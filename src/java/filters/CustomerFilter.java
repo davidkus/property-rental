@@ -8,6 +8,11 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import models.Customer;
+import models.User;
 
 @WebFilter(filterName = "CustomerFilter", urlPatterns = {"/customer/*"})
 public class CustomerFilter implements Filter {
@@ -34,7 +39,18 @@ public class CustomerFilter implements Filter {
         FilterChain chain
     ) throws IOException, ServletException {
         
-        chain.doFilter(request, response);
+        HttpServletRequest req = (HttpServletRequest) request;
+        HttpServletResponse res = (HttpServletResponse) response;
+        HttpSession ses = req.getSession(false);
+        User user = (User)ses.getAttribute("user");
+        
+        if( user instanceof Customer ) {
+            chain.doFilter(request, response);
+        }
+        
+        // This should be changed to some error page saying you don't have permission
+        String loginURL = req.getContextPath() + "/login.xhtml";
+        res.sendRedirect(loginURL);
     }
 
     /**

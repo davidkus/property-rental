@@ -1,17 +1,23 @@
 package models;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.EntityManager;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.Query;
+import static models.BaseEntity.performQuery;
 
 @Entity
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
 public class Owner extends User {
     private static final long serialVersionUID = 1L;
 
+    public static Owner getByAccount(UserAccount account, EntityManager em) {
+        Query query = em.createQuery("SELECT o FROM Owner o WHERE o.userAccount = :userAccount");
+        query.setParameter("userAccount", account);
+        return performQuery(Owner.class, query);
+    }
+    
     @Override
     public int hashCode() {
         int hash = 0;

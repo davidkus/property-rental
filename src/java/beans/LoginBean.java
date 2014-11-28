@@ -1,25 +1,15 @@
 package beans;
 
-import javax.annotation.Resource;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.servlet.http.HttpSession;
-import javax.transaction.UserTransaction;
+import models.User;
 import models.UserAccount;
 
-@ManagedBean
 @RequestScoped
-public class LoginBean {
-
-    @PersistenceContext(unitName = "property-rentalPU")
-    private EntityManager em;
-
-    @Resource
-    private UserTransaction utx;
+@ManagedBean
+public class LoginBean extends BaseBean {
 
     private String username;
     private String password;
@@ -60,8 +50,11 @@ public class LoginBean {
          if (account != null) {
             if (account.checkPassword(password)) {
                 //login ok - set user in session context
-                HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
-                session.setAttribute("user", account.getUser());
+                HttpSession session = (HttpSession) FacesContext.getCurrentInstance()
+                                                                .getExternalContext()
+                                                                .getSession(false);
+                User user = account.getUser(em);
+                session.setAttribute("user", user);
                 status="Login Successful - " + "Welcome " + account.getFirstname(); 
             } else {
                status="Invalid Login, Please Try again"; 

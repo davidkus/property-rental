@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import models.User;
+import models.UserAccount;
 
 @WebFilter(filterName = "AuthenticationFilter",
            urlPatterns = {"/owner/*", "/customer/*", "/agent/*", "/user/*"})
@@ -43,6 +44,7 @@ public class AuthenticationFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
         HttpSession ses = req.getSession(false);
+        UserAccount account = (UserAccount)ses.getAttribute("account");
         User user = (User)ses.getAttribute("user");
         
         if (ses == null || user == null ) {

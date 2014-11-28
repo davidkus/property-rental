@@ -10,6 +10,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -36,7 +37,7 @@ public class UserAccount extends BaseEntity {
     private byte[] salt; // the salt used for this account
     @OneToOne
     private Address address;
-    @OneToOne(mappedBy = "userAccount")
+    @OneToOne(mappedBy = "userAccount", fetch=FetchType.EAGER)
     private User user;
 
     public String getUsername() {
@@ -111,6 +112,22 @@ public class UserAccount extends BaseEntity {
         this.id = id;
     }
     
+    public User getUser(EntityManager em) {
+        Agent agent = Agent.getByAccount(this, em);
+        if( agent != null ) {
+            return agent;
+        }
+        
+        Customer customer = Customer.getByAccount(this, em);
+        if( customer != null ) {
+            return customer;
+        }
+        
+        Owner owner = Owner.getByAccount(this, em);
+        
+        return owner;
+    }
+    
     public boolean setPassword(String password) {
         try {
             // randomly generate salt value
@@ -147,7 +164,7 @@ public class UserAccount extends BaseEntity {
     }
     
     public static UserAccount findByUsername(String username, EntityManager em) {
-        Query query = em.createQuery("SELECT ua FROM user_accounts_5939559 ua WHERE ua.username = :username");
+        Query query = em.createQuery("SELECT ua FROM UserAccount ua WHERE ua.username = :username");
         query.setParameter("username", username);
         UserAccount result = performQuery(UserAccount.class, query);
         return result;

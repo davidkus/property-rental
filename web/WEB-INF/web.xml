@@ -29,6 +29,11 @@
         <servlet-name>Faces Servlet</servlet-name>
         <url-pattern>*.xhtml</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>TestDataServlet</servlet-name>
+        <servlet-class>testdata.TestDataServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+     </servlet>
     <session-config>
         <session-timeout>
             30

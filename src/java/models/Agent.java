@@ -1,13 +1,21 @@
 package models;
 
 import javax.persistence.Entity;
+import javax.persistence.EntityManager;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.Query;
 
 @Entity
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
 public class Agent extends User {
     private static final long serialVersionUID = 1L;
+    
+    public static Agent getByAccount(UserAccount account, EntityManager em) {
+        Query query = em.createQuery("SELECT a FROM Agent a WHERE a.userAccount = :userAccount");
+        query.setParameter("userAccount", account);
+        return performQuery(Agent.class, query);
+    }
 
     @Override
     public int hashCode() {
