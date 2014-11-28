@@ -2,6 +2,7 @@ package beans;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 import models.User;
@@ -47,25 +48,18 @@ public class LoginBean extends BaseBean {
 
     public void login() {
         UserAccount account = UserAccount.findByUsername(username, em);
-         if (account != null) {
-            if (account.checkPassword(password)) {
-                //login ok - set user in session context
-                HttpSession session = (HttpSession) FacesContext.getCurrentInstance()
-                                                                .getExternalContext()
-                                                                .getSession(false);
-                User user = account.getUser(em);
-                session.setAttribute("user", user);
-                status="Login Successful - " + "Welcome " + account.getFirstname(); 
-            } else {
-               status="Invalid Login, Please Try again"; 
-            }
+         if (account != null && account.checkPassword(password)) {
+            //login ok - set user in session context
+            ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
+            HttpSession session = (HttpSession)context.getSession(false);
+            User user = account.getUser(em);
+            session.setAttribute("user", user);
+            try {
+                context.redirect(context.getRequestContextPath() + "index.xhtml");
+            } catch (Exception e) {}
          } else {
              status="Invalid Login, Please Try again";
          }
-    }
-    
-    public static String redirectToLogin() {
-        return "/login.xhtml?faces-redirect=true";
     }
     
 }

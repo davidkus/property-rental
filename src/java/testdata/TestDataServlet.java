@@ -1,19 +1,14 @@
 package testdata;
 
-import java.io.IOException;
-import java.io.PrintWriter;
 import javax.annotation.Resource;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.transaction.UserTransaction;
 import models.Agent;
+import models.Customer;
 import models.Owner;
-import models.User;
 import models.UserAccount;
 
 /**
@@ -33,23 +28,60 @@ public class TestDataServlet extends HttpServlet {
     public void init() {
         try {
             utx.begin();
-            UserAccount account = new UserAccount();
-            account.setEmail("agent@example.com");
-            account.setUsername("agent");
-            account.setFirstname("Agent");
-            account.setLastname("Agent");
-            account.setPassword("test");
             
-            Agent user = new Agent();
-            user.setUserAccount(account);
-            
-            em.persist(account);
-            em.persist(user);
+            createAgent();
+            createOwner();
+            createCustomer();
             
             utx.commit();
         } catch (Exception e) {}
     }
 
+    private void createAgent() {
+        UserAccount account = new UserAccount();
+        account.setEmail("agent@example.com");
+        account.setUsername("agent");
+        account.setFirstname("Agent1");
+        account.setLastname("Agent1");
+        account.setPassword("test");
+
+        Agent user = new Agent();
+        user.setUserAccount(account);
+
+        em.persist(account);
+        em.persist(user);
+    }
+    
+    private void createOwner() {
+        UserAccount account = new UserAccount();
+        account.setEmail("owner@example.com");
+        account.setUsername("owner");
+        account.setFirstname("Owner1");
+        account.setLastname("Owner1");
+        account.setPassword("test");
+
+        Owner user = new Owner();
+        user.setUserAccount(account);
+
+        em.persist(account);
+        em.persist(user);
+    }
+    
+    private void createCustomer() {
+        UserAccount account = new UserAccount();
+        account.setEmail("customer@example.com");
+        account.setUsername("customer");
+        account.setFirstname("Customer1");
+        account.setLastname("Customer1");
+        account.setPassword("test");
+
+        Customer user = new Customer();
+        user.setUserAccount(account);
+
+        em.persist(account);
+        em.persist(user);
+    }
+    
     /**
      * Returns a short description of the servlet.
      *
