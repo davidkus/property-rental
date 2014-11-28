@@ -1,5 +1,6 @@
 package filters;
 
+import beans.SessionBean;
 import java.io.IOException;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -41,10 +42,9 @@ public class CustomerFilter implements Filter {
         
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
-        HttpSession ses = req.getSession(false);
-        User user = (User)ses.getAttribute("user");
+        SessionBean session = (SessionBean)req.getSession(true).getAttribute("sessionBean");
         
-        if( user instanceof Customer ) {
+        if( session != null && session.isCustomer() ) {
             chain.doFilter(request, response);
         }
         

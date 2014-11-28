@@ -1,5 +1,6 @@
 package filters;
 
+import beans.SessionBean;
 import java.io.IOException;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -10,9 +11,6 @@ import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import models.Agent;
-import models.User;
 
 @WebFilter(filterName = "AgentFilter", urlPatterns = {"/agent/*"})
 public class AgentFilter implements Filter {
@@ -41,10 +39,9 @@ public class AgentFilter implements Filter {
         
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
-        HttpSession ses = req.getSession(false);
-        User user = (User)ses.getAttribute("user");
+        SessionBean session = (SessionBean)req.getSession(true).getAttribute("sessionBean");
         
-        if( user instanceof Agent ) {
+        if( session != null && session.isAgent() ) {
             chain.doFilter(request, response);
         }
         

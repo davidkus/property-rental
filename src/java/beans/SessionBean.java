@@ -1,26 +1,27 @@
 package beans;
 
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
-import javax.faces.context.FacesContext;
-import javax.servlet.http.HttpSession;
+import javax.faces.bean.SessionScoped;
 import models.Agent;
 import models.Customer;
 import models.Owner;
 import models.User;
 
 @ManagedBean
-@RequestScoped
-public class SessionBean extends BaseBean {
+@SessionScoped
+public class SessionBean {
+    
+    private User user;
 
     public SessionBean() {
     }
     
     public User getUser() {
-        HttpSession session = (HttpSession)FacesContext.getCurrentInstance()
-                                                        .getExternalContext()
-                                                        .getSession(false);
-        return (User)session.getAttribute("user");
+        return user;
+    }
+    
+    public void setUser(User user) {
+        this.user = user;
     }
     
     public boolean isLoggedIn() {

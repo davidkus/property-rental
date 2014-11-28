@@ -1,5 +1,6 @@
 package filters;
 
+import beans.SessionBean;
 import java.io.IOException;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -10,9 +11,6 @@ import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import models.User;
-import models.UserAccount;
 
 @WebFilter(filterName = "AuthenticationFilter",
            urlPatterns = {"/owner/*", "/customer/*", "/agent/*", "/user/*"})
@@ -43,11 +41,9 @@ public class AuthenticationFilter implements Filter {
 
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
-        HttpSession ses = req.getSession(false);
-        UserAccount account = (UserAccount)ses.getAttribute("account");
-        User user = (User)ses.getAttribute("user");
+        SessionBean session = (SessionBean)req.getSession(true).getAttribute("sessionBean");
         
-        if (ses == null || user == null ) {
+        if ( session == null || session.getUser() == null ) {
             String loginURL = req.getContextPath() + "/login.xhtml";
             res.sendRedirect(loginURL);
         } else {

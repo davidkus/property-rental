@@ -1,5 +1,6 @@
 package filters;
 
+import beans.SessionBean;
 import java.io.IOException;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -10,10 +11,6 @@ import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import models.Owner;
-import models.User;
-import models.UserAccount;
 
 @WebFilter(filterName = "OwnerFilter", urlPatterns = {"/owner/*"})
 public class OwnerFilter implements Filter {
@@ -42,10 +39,9 @@ public class OwnerFilter implements Filter {
         
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
-        HttpSession ses = req.getSession(false);
-        User user = (User)ses.getAttribute("user");
+        SessionBean session = (SessionBean)req.getSession(true).getAttribute("sessionBean");
         
-        if( user instanceof Owner ) {
+        if( session != null && session.isOwner() ) {
             chain.doFilter(request, response);
         }
         

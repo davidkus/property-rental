@@ -6,9 +6,11 @@ import javax.persistence.PersistenceContext;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.transaction.UserTransaction;
+import models.Address;
 import models.Agent;
 import models.Customer;
 import models.Owner;
+import models.Property;
 import models.UserAccount;
 
 /**
@@ -80,6 +82,13 @@ public class TestDataServlet extends HttpServlet {
 
         em.persist(account);
         em.persist(user);
+    }
+    
+    private void createProperties(int numberOfProperties) {
+        for( int i = 0; i < numberOfProperties; i++ ) {
+            Address address = new Address();
+            Property property = new Property();
+        }
     }
     
     /**
