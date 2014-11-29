@@ -9,7 +9,29 @@
         <ui:composition template="./../template.xhtml">
 
         <ui:define name="content">
-            <h:outputText value="#{viewAccountBean.account.firstname}" />
+            <h1>View Account</h1>
+            <table border="0px">
+                <tr>
+                    <td><h:outputText value="Username: " /></td>
+                    <td><h:outputText value="#{viewAccountBean.account.username}" /></td>
+                </tr>
+                <tr>
+                    <td><h:outputText value="Firstname: " /></td>
+                    <td><h:outputText value="#{viewAccountBean.account.firstname}" /></td>
+                </tr>
+                <tr>
+                    <td><h:outputText value="Lastname: " /></td>
+                    <td><h:outputText value="#{viewAccountBean.account.lastname}" /></td>
+                </tr>
+                <tr>
+                    <td><h:outputText value="Email: " /></td>
+                    <td><h:outputText value="#{viewAccountBean.account.email}" /></td>
+                </tr>
+                <tr>
+                    <td><h:outputText value="Account Type: " /></td>
+                    <td><h:outputText value="#{viewAccountBean.accountType}" /></td>
+                </tr>
+            </table>
         </ui:define>
 
         </ui:composition>
