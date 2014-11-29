@@ -47,7 +47,7 @@ public class LoginBean extends BaseBean {
 
     public void login() {
         UserAccount account = UserAccount.findByUsername(username, em);
-         if (account != null && account.checkPassword(password)) {
+         if (account != null && account.checkPassword(password) && !account.isDeleted()) {
             ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
             User user = account.getUser(em);
             sessionBean.setUser(user);

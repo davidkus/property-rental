@@ -31,6 +31,7 @@ public class UserAccount extends BaseEntity {
     private String firstname;
     private String lastname;
     private String email;
+    private boolean deleted = false;
     private double maxrent;
     @Lob
     private byte[] password; // salted + hashed password
@@ -47,6 +48,14 @@ public class UserAccount extends BaseEntity {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+    
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 
     public String getFirstname() {
