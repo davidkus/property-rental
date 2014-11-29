@@ -9,7 +9,9 @@
         <ui:composition template="./../template.xhtml">
 
         <ui:define name="content">
-            <h:outputText value="#{viewAccountBean.account.firstname}" />
+            First Name: <h:outputText value="#{viewAccountBean.account.firstname}" />
+            Account Type: <h:outputText value="#{viewAccountBean.account.user}" />
+            Max Rent: <h:outputText value="#{viewAccountBean.account.maxrent}" />
         </ui:define>
 
         </ui:composition>

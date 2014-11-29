@@ -22,6 +22,9 @@
             <c:choose>
                 <c:when test="#{sessionBean.isLoggedIn()}">
                     <h:link value="View Account" outcome="/user/view_account" />
+                    <c:if test="#{sessionBean.isAgent()}">
+                        <h:link value="Create Account" outcome="/agent/create_account" />
+                    </c:if>
                 </c:when>
                 <c:otherwise>
                     <h:link value="Login" outcome="/login" />

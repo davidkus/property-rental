@@ -46,6 +46,7 @@ public class TestDataServlet extends HttpServlet {
         account.setFirstname("Agent1");
         account.setLastname("Agent1");
         account.setPassword("test");
+        account.setMaxrent(0.0);
 
         Agent user = new Agent();
         user.setUserAccount(account);
@@ -61,6 +62,7 @@ public class TestDataServlet extends HttpServlet {
         account.setFirstname("Owner1");
         account.setLastname("Owner1");
         account.setPassword("test");
+        account.setMaxrent(0.0);
 
         Owner user = new Owner();
         user.setUserAccount(account);
@@ -76,6 +78,7 @@ public class TestDataServlet extends HttpServlet {
         account.setFirstname("Customer1");
         account.setLastname("Customer1");
         account.setPassword("test");
+        account.setMaxrent(800);
 
         Customer user = new Customer();
         user.setUserAccount(account);

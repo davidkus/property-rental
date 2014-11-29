@@ -41,13 +41,16 @@ public class AgentFilter implements Filter {
         HttpServletResponse res = (HttpServletResponse) response;
         SessionBean session = (SessionBean)req.getSession(true).getAttribute("sessionBean");
         
-        if( session != null && session.isAgent() ) {
+        if( session != null || session.isAgent() ) {
             chain.doFilter(request, response);
         }
+        else{
+            // This should be changed to some error page saying you don't have permission
+            String loginURL = req.getContextPath() + "/login.xhtml";
+            res.sendRedirect(loginURL);
+        }
         
-        // This should be changed to some error page saying you don't have permission
-        String loginURL = req.getContextPath() + "/login.xhtml";
-        res.sendRedirect(loginURL);
+        
     }
 
     /**
