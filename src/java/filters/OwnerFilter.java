@@ -43,6 +43,7 @@ public class OwnerFilter implements Filter {
         
         if( session != null && session.isOwner() ) {
             chain.doFilter(request, response);
+            return;
         }
         
         // This should be changed to some error page saying you don't have permission

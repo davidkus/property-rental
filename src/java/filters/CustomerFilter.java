@@ -46,6 +46,7 @@ public class CustomerFilter implements Filter {
         
         if( session != null && session.isCustomer() ) {
             chain.doFilter(request, response);
+            return;
         }
         
         // This should be changed to some error page saying you don't have permission

@@ -1,5 +1,6 @@
 package beans;
 
+import java.io.Serializable;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import models.Agent;
@@ -9,7 +10,7 @@ import models.User;
 
 @ManagedBean
 @SessionScoped
-public class SessionBean {
+public class SessionBean implements Serializable {
     
     private User user;
 
@@ -25,68 +26,39 @@ public class SessionBean {
     }
     
     public boolean isLoggedIn() {
-        User user = getUser();
         return user != null;
     }
     
-    public boolean isAgent() {
-        User user = getUser();
-        
-        if (user instanceof Agent) {
-            return true;
-        }
-        
-        return false;
+    public boolean isAgent() {        
+        return user instanceof Agent;
     }
     
     public Agent getAgent() {
-        User user = getUser();
-        
         if (user instanceof Agent) {
             return (Agent)user;
         }
-        
         return null;
     }
     
-    public boolean isCustomer() {
-        User user = getUser();
-        
-        if (user instanceof Customer) {
-            return true;
-        }
-        
-        return false;
+    public boolean isCustomer() {        
+        return user instanceof Customer;
     }
     
-    public Customer getCustomer() {
-        User user = getUser();
-        
+    public Customer getCustomer() {        
         if (user instanceof Customer) {
             return (Customer)user;
         }
-        
         return null;
     }
     
-    public boolean isOwner() {
-        User user = getUser();
-        
-        if (user instanceof Owner) {
-            return true;
-        }
-        
-        return false;
+    public boolean isOwner() {        
+        return user instanceof Owner;
     }
     
-    public Owner getOwner() {
-        User user = getUser();
-        
+    public Owner getOwner() {        
         if (user instanceof Owner) {
             return (Owner)user;
         }
-        
         return null;
-    }
-    
+    }    
 }
