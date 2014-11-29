@@ -28,9 +28,14 @@
                         <f:selectItem itemValue="otherrooms" itemLabel="Number of Other Rooms" />
                     </h:selectOneMenu>
                     
+                    <h:selectOneMenu id="ascending" value="#{ownerViewPropertiesBean.ascending}">
+                        <f:selectItem itemValue="true" itemLabel="Ascending" />
+                        <f:selectItem itemValue="false" itemLabel="Descending" />
+                    </h:selectOneMenu>
+                    
                     <h:commandButton value="Sort" type="command"
                                      actionListener="#{ownerViewPropertiesBean.sort}">
-                        <f:ajax execute="orderBy" render="pagedResults"/>
+                        <f:ajax execute="orderBy ascending" render="pagedResults"/>
                     </h:commandButton>
                     
                     <h:dataTable cellpadding="10pt" value="#{ownerViewPropertiesBean.properties}"
@@ -77,12 +82,12 @@
                     
                     <h:commandButton value="Previous Page" type="command"
                                      actionListener="#{ownerViewPropertiesBean.previousPage}">
-                        <f:ajax execute="pageNumber orderBy" render="pagedResults"/>
+                        <f:ajax execute="pageNumber orderBy ascending" render="pagedResults"/>
                     </h:commandButton>
                     
                     <h:commandButton value="Next Page" type="command"
                                      actionListener="#{ownerViewPropertiesBean.nextPage}">
-                        <f:ajax execute="pageNumber orderBy" render="pagedResults"/>
+                        <f:ajax execute="pageNumber orderBy ascending" render="pagedResults"/>
                     </h:commandButton>
                     
                 </h:form>
