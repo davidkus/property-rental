@@ -1,5 +1,6 @@
 package testdata;
 
+import java.util.Random;
 import javax.annotation.Resource;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -31,15 +32,17 @@ public class TestDataServlet extends HttpServlet {
         try {
             utx.begin();
             
-            createAgent();
-            createOwner();
-            createCustomer();
+            Agent agent = createAgent();
+            Owner owner = createOwner();
+            Customer customer = createCustomer();
             
+            createOwnerProperties(owner, 50);
+                        
             utx.commit();
         } catch (Exception e) {}
     }
 
-    private void createAgent() {
+    private Agent createAgent() {
         UserAccount account = new UserAccount();
         account.setEmail("agent@example.com");
         account.setUsername("agent");
@@ -52,9 +55,10 @@ public class TestDataServlet extends HttpServlet {
 
         em.persist(account);
         em.persist(user);
+        return user;
     }
     
-    private void createOwner() {
+    private Owner createOwner() {
         UserAccount account = new UserAccount();
         account.setEmail("owner@example.com");
         account.setUsername("owner");
@@ -67,9 +71,10 @@ public class TestDataServlet extends HttpServlet {
 
         em.persist(account);
         em.persist(user);
+        return user;
     }
     
-    private void createCustomer() {
+    private Customer createCustomer() {
         UserAccount account = new UserAccount();
         account.setEmail("customer@example.com");
         account.setUsername("customer");
@@ -82,13 +87,36 @@ public class TestDataServlet extends HttpServlet {
 
         em.persist(account);
         em.persist(user);
+        return user;
     }
     
-    private void createProperties(int numberOfProperties) {
+    private void createOwnerProperties(Owner owner, int numberOfProperties) {
+        Random rand = new Random();
         for( int i = 0; i < numberOfProperties; i++ ) {
-            Address address = new Address();
+            Address address = createAddress();
             Property property = new Property();
+            property.setAddress(address);
+            property.setOwner(owner);
+            property.setLocation("Canada");
+            property.setNumberOfBathrooms((long)rand.nextInt(10) + 1);
+            property.setNumberOfBedrooms((long)rand.nextInt(10) + 1);
+            property.setNumberOtherRooms((long)rand.nextInt(10) + 1);
+            property.setType("House");
+            property.setRent(rand.nextDouble() * 1000);
+            em.persist(property);
         }
+    }
+    
+    private Address createAddress() {
+        Address address = new Address();
+        address.setCity("Ottawa");
+        address.setCountry("Canada");
+        address.setPostalCode("K1N 6N5");
+        address.setProvince("ON");
+        address.setStreetName("Laurier Ave E");
+        address.setStreetNumber(75L);
+        em.persist(address);
+        return address;
     }
     
     /**

@@ -28,6 +28,10 @@
                 </c:otherwise>
             </c:choose>
             
+            <c:if test="#{sessionBean.isOwner()}" >
+                <h:link value="View Properties" outcome="/owner/view_properties" />
+            </c:if>
+            
             <ui:insert name="top"></ui:insert>
         </div>
 

@@ -1,9 +1,11 @@
 package models;
 
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.OneToMany;
 import javax.persistence.Query;
 import static models.BaseEntity.performQuery;
 
@@ -11,7 +13,52 @@ import static models.BaseEntity.performQuery;
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
 public class Owner extends User {
     private static final long serialVersionUID = 1L;
+    
+    @OneToMany(mappedBy = "owner")
+    private List<Property> properties;
 
+    public List<Property> getProperties() {
+        return properties;
+    }
+
+    public void setProperties(List<Property> properties) {
+        this.properties = properties;
+    }
+    
+    public List<Property> getProperties(String orderBy, boolean ascending, int pageSize, int pageNumber, EntityManager em) {
+        String queryString = "SELECT p FROM Property p WHERE p.owner = :owner";
+        
+        if (orderBy.equals("bedrooms")) {
+            queryString += "  ORDER BY p.numberOfBedrooms ";
+        } else if (orderBy.equals("bathrooms")) {
+            queryString += "  ORDER BY p.numberOfBathrooms ";
+        } else if (orderBy.equals("otherrooms")) {
+            queryString += "  ORDER BY p.numberOtherRooms ";
+        } else {
+            queryString += "  ORDER BY p.rent ";
+        }
+        
+        if (ascending) {
+            queryString += "ASC";
+        } else {
+            queryString += "DESC";
+        }
+        
+        Query query = em.createQuery(queryString);
+        
+        query.setParameter("owner", this);
+        query.setFirstResult((pageNumber - 1) * pageSize);
+        query.setMaxResults(pageSize);
+        
+        return performQueryList(Property.class, query);
+    }
+    
+    public long getPropertiesCount(EntityManager em) {
+        Query query = em.createQuery("SELECT COUNT(p) FROM Property p WHERE p.owner = :owner");
+        query.setParameter("owner", this);
+        return performQuery(Long.class, query);
+    }
+    
     public static Owner getByAccount(UserAccount account, EntityManager em) {
         Query query = em.createQuery("SELECT o FROM Owner o WHERE o.userAccount = :userAccount");
         query.setParameter("userAccount", account);

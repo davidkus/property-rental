@@ -7,6 +7,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -25,10 +26,13 @@ public class Property extends BaseEntity {
     private Long numberOfBathrooms;
     private Long numberOtherRooms;
     private Double rent;
+    private String status = "Active";
     @OneToOne
     private Address address; 
     @OneToMany(fetch=FetchType.EAGER)
     private List<Photo> photos;
+    @ManyToOne
+    private Owner owner;
     
     public Long getId() {
         return id;
@@ -78,6 +82,14 @@ public class Property extends BaseEntity {
         this.numberOtherRooms = numberOtherRooms;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     public Double getRent() {
         return rent;
     }
@@ -100,6 +112,14 @@ public class Property extends BaseEntity {
 
     public void setPhotos(List<Photo> photos) {
         this.photos = photos;
+    }
+
+    public Owner getOwner() {
+        return owner;
+    }
+
+    public void setOwner(Owner owner) {
+        this.owner = owner;
     }
 
     @Override
