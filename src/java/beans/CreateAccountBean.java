@@ -202,7 +202,7 @@ public class CreateAccountBean extends BaseBean {
                 em.persist(user);
                 utx.commit();
                 try {
-                    context.redirect(context.getRequestContextPath() + "/index.xhtml");
+                    context.redirect(context.getRequestContextPath() + "/agent/account_creation_successful.xhtml");
                 } catch (Exception e) {
                 }
 
