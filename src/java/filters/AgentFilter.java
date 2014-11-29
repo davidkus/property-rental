@@ -45,13 +45,10 @@ public class AgentFilter implements Filter {
             chain.doFilter(request, response);
             return;
         }
-        else{
-            // This should be changed to some error page saying you don't have permission
-            String loginURL = req.getContextPath() + "/login.xhtml";
-            res.sendRedirect(loginURL);
-        }
-        
-        
+
+        // This should be changed to some error page saying you don't have permission
+        String loginURL = req.getContextPath() + "/login.xhtml";
+        res.sendRedirect(loginURL);        
     }
 
     /**
