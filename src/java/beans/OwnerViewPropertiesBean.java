@@ -14,7 +14,6 @@ public class OwnerViewPropertiesBean extends BaseBean {
     private String orderBy = "rent";
     private boolean ascending = true;
     private List<Property> properties;
-    private Long propertyCount;
     private int pageNumber = 1;
     
     /**
@@ -55,40 +54,48 @@ public class OwnerViewPropertiesBean extends BaseBean {
     }
     
     public void nextPage() {
+        properties = sessionBean.getOwner().getProperties(orderBy, ascending, em);
         if ( hasNextPage() ) {
-            properties = null;
-            propertyCount = null;
             pageNumber++;
         }
     }
     
     public void previousPage() {
+        properties = sessionBean.getOwner().getProperties(orderBy, ascending, em);
         if( hasPreviousPage() ) {
-            properties = null;
-            propertyCount = null;
             pageNumber--;
         }
     }
     
     public void sort() {
-        properties = null;
-        propertyCount = null;
+        properties = sessionBean.getOwner().getProperties(orderBy, ascending, em);
         pageNumber = 1;
     }
     
     public List<Property> getProperties() {
         if (properties == null) {
-            properties = 
-                    sessionBean.getOwner().getProperties(orderBy, ascending, PAGE_SIZE, pageNumber, em);
+            properties = sessionBean.getOwner().getProperties(orderBy, ascending, em);
         }
-        return properties;
+        
+        if (properties.isEmpty()) {
+            return properties;
+        }
+        
+        int from = PAGE_SIZE * (pageNumber - 1);
+        int to = from + PAGE_SIZE;
+                
+        if (to >= properties.size()) {
+            to = properties.size() - 1;
+        }
+        
+        return properties.subList(from, to);
     }
     
     public long getPropertyCount() {
-        if (propertyCount == null) {
-            propertyCount = sessionBean.getOwner().getPropertiesCount(em);
+        if (properties == null) {
+            properties = sessionBean.getOwner().getProperties(orderBy, ascending, em);
         }
-        return propertyCount;
+        return properties.size();
     }
     
 }

@@ -26,17 +26,16 @@
                         <f:selectItem itemValue="bedrooms" itemLabel="Number of Bedrooms" />
                         <f:selectItem itemValue="bathrooms" itemLabel="Number of Bathrooms" />
                         <f:selectItem itemValue="otherrooms" itemLabel="Number of Other Rooms" />
+                        <f:ajax event="change" listener="#{ownerViewPropertiesBean.sort}"
+                                execute="orderBy ascending" render="pagedResults" /> 
                     </h:selectOneMenu>
                     
                     <h:selectOneMenu id="ascending" value="#{ownerViewPropertiesBean.ascending}">
                         <f:selectItem itemValue="true" itemLabel="Ascending" />
                         <f:selectItem itemValue="false" itemLabel="Descending" />
+                        <f:ajax event="change" listener="#{ownerViewPropertiesBean.sort}"
+                                execute="orderBy ascending" render="pagedResults" />
                     </h:selectOneMenu>
-                    
-                    <h:commandButton value="Sort" type="command"
-                                     actionListener="#{ownerViewPropertiesBean.sort}">
-                        <f:ajax execute="orderBy ascending" render="pagedResults"/>
-                    </h:commandButton>
                     
                     <h:dataTable cellpadding="10pt" value="#{ownerViewPropertiesBean.properties}"
                                  var="property">
