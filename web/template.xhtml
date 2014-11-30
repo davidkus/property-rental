@@ -16,26 +16,25 @@
     <h:body>
 
         <div id="top">
-            <!-- Lets put some navigation links here -->
-            <h:link value="Home" outcome="/index" />
+            <div style="float: left">
+                <h:link value="Home" outcome="/index" />
+                <c:if test="#{sessionBean.owner}" >
+                    <h:link value="View Properties" outcome="/owner/view_properties" />
+                </c:if>
+                <c:if test="#{sessionBean.agent}" >
+                    <h:link value="Create Account" outcome="/agent/create_account" />
+                </c:if>
+                <ui:insert name="top"></ui:insert>
+            </div>
             
-            <c:choose>
-                <c:when test="#{sessionBean.isLoggedIn()}">
-                    <h:link value="View Account" outcome="/user/view_account" />
-                    <c:if test="#{sessionBean.isAgent()}">
-                        <h:link value="Create Account" outcome="/agent/create_account" />
-                    </c:if>
-                </c:when>
-                <c:otherwise>
+            <div style="float: right">
+                <c:if test="#{!sessionBean.loggedIn}" >
                     <h:link value="Login" outcome="/login" />
-                </c:otherwise>
-            </c:choose>
-            
-            <c:if test="#{sessionBean.isOwner()}" >
-                <h:link value="View Properties" outcome="/owner/view_properties" />
-            </c:if>
-            
-            <ui:insert name="top"></ui:insert>
+                </c:if>
+                <c:if test="#{sessionBean.loggedIn}" >
+                    <h:link value="View Account" outcome="/user/view_account" />
+                </c:if>
+            </div>
         </div>
 
         <div id="content" class="center_content">
