@@ -1,24 +1,19 @@
 package beans;
 
-import facades.UserAccountFacade;
-import facades.UserFacade;
+import facades.LoginFacade;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import models.User;
-import models.UserAccount;
 
 @RequestScoped
 @ManagedBean
 public class LoginBean extends BaseBean {
     
-    @ManagedProperty(value="#{userAccountFacade}")
-    UserAccountFacade userAccountFacade;
-    
-    @ManagedProperty(value="#{userFacade}")
-    UserFacade userFacade;
+    @ManagedProperty(value="#{loginFacade}")
+    LoginFacade loginFacade;
 
     private String username;
     private String password;
@@ -30,20 +25,12 @@ public class LoginBean extends BaseBean {
     public LoginBean() {
     }
 
-    public UserAccountFacade getUserAccountFacade() {
-        return userAccountFacade;
+    public LoginFacade getLoginFacade() {
+        return loginFacade;
     }
 
-    public void setUserAccountFacade(UserAccountFacade userAccountFacade) {
-        this.userAccountFacade = userAccountFacade;
-    }
-
-    public UserFacade getUserFacade() {
-        return userFacade;
-    }
-
-    public void setUserFacade(UserFacade userFacade) {
-        this.userFacade = userFacade;
+    public void setLoginFacade(LoginFacade loginFacade) {
+        this.loginFacade = loginFacade;
     }
     
     public String getUsername() {
@@ -71,17 +58,17 @@ public class LoginBean extends BaseBean {
     }
 
     public void login() {
-        UserAccount account = userAccountFacade.findByUsername(username, em);
-         if (account != null && userAccountFacade.checkPassword(account, password) && !account.isDeleted()) {
-            ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
-            User user = userFacade.getByAccount(account, em);
+        User user = loginFacade.login(username, password);
+        
+        if (user != null) {
             sessionBean.setUser(user);
             try {
+                ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
                 context.redirect(context.getRequestContextPath() + "/index.xhtml");
             } catch (Exception e) {}
-         } else {
-             status="Invalid Login, Please Try again";
-         }
+        } else {
+            status = "Login failed. Invalid username or password.";
+        }
     }
     
 }
