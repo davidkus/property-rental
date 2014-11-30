@@ -1,0 +1,83 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <body>
+
+        <ui:composition template="./../template.xhtml">
+
+        <ui:define name="content">
+            <f:view>
+                <h:form enctype="multipart/form-data">
+                    <h:panelGrid columns="2">
+                        <h:outputText value="Property Type" />
+                        <h:selectOneMenu id="types" value="#{addPropertyBean.type}">
+                            <f:selectItem id="house" itemValue="House" itemLabel="House"/>
+                            <f:selectItem id="apartment" itemValue="Hpartment" itemLabel="Apartment"/>
+                        </h:selectOneMenu>
+                        <h:outputText value="Photo 1" />
+                        <h:inputFile id="photo1" value="#{addPropertyBean.photo1}"/>
+                        <h:outputText value="Photo 2" />
+                        <h:inputFile id="photo2" value="#{addPropertyBean.photo2}" required="false"/>
+                        <h:outputText value="Photo 3" />
+                        <h:inputFile id="photo3" value="#{addPropertyBean.photo3}" required="false"/>
+                        <h:outputText value="Photo 4" />
+                        <h:inputFile id="photo4" value="#{addPropertyBean.photo4}" required="false"/>
+                        <h:outputText value="Photo 5" />
+                        <h:inputFile id="photo5" value="#{addPropertyBean.photo5}" required="false"/>
+                        <h:outputText value="Street Number" />
+                        <h:inputText id="streetnumber" value="#{addPropertyBean.streetnumber}" />
+                        <h:outputText value="Unit Number" />
+                        <h:inputText id="unitnumber" value="#{addPropertyBean.unitnumber}" />
+                        <h:outputText value="Street Name" />
+                        <h:inputText id="streetname" value="#{addPropertyBean.streetname}" />
+                        <h:outputText value="City" />
+                        <h:inputText id="city" value="#{addPropertyBean.city}" />
+                        <h:outputText value="Province" />
+                        <h:inputText id="province" value="#{addPropertyBean.province}" />
+                        <h:outputText value="Postal Code" />
+                        <h:inputText id="postalcode" value="#{addPropertyBean.postalcode}" />
+                        <h:outputText value="Country" />
+                        <h:inputText id="country" value="#{addPropertyBean.country}" />    
+                        <h:outputText value="Location" />
+                        <h:selectOneMenu id="locationtypes" value="#{addPropertyBean.location}">
+                            <f:selectItem id="toronto" itemValue="toronto" itemLabel="Toronto"/>
+                            <f:selectItem id="ottawa" itemValue="ottawa" itemLabel="Ottawa"/>
+                            <f:selectItem id="kingston" itemValue="Kingston" itemLabel="Kingston"/>
+                            <f:selectItem id="montreal" itemValue="montreal" itemLabel="Montreal"/>
+                            <f:selectItem id="kitchener" itemValue="kitchener" itemLabel="Kitchener"/>
+                            <f:selectItem id="windsor" itemValue="windsor" itemLabel="Windsor"/>
+                            <f:selectItem id="london" itemValue="london" itemLabel="London"/>
+                            <f:selectItem id="belleville" itemValue="belleville" itemLabel="Belleville"/>
+                            <f:selectItem id="other" itemValue="other" itemLabel="Other"/>
+                        </h:selectOneMenu>
+                        <h:outputText value="# of Bathrooms" />
+                        <h:inputText id="bathrooms" value="#{addPropertyBean.numberofbathrooms}" />
+                        <h:outputText value="# of Bedrooms" />
+                        <h:inputText id="bedrooms" value="#{addPropertyBean.numberofbedrooms}" />
+                        <h:outputText value="# of Other Rooms" />
+                        <h:inputText id="otherrooms" value="#{addPropertyBean.numberofotherrooms}" />
+                        <h:outputText value="Rent" />
+                        <h:inputText id="rent" value="#{addPropertyBean.rent}" />
+                    </h:panelGrid>
+                    <h:commandButton value="Add Property" type="command"  actionListener="#{addPropertyBean.addProperty}">
+                        <f:ajax execute="types streetnumber unitnumber streetname city province postalcode country locationtypes bathrooms bedrooms otherrooms rent photo1 photo2 photo3 photo4 photo5" render="status"/>
+                    </h:commandButton>      
+                    <div>
+                        <hr/>
+                        <hr/>
+                        <h:outputText style="color:royalblue; font-size: large;
+                                      font-weight: bold" id="status" value="#{addPropertyBean.status}"/>
+                    </div>
+                </h:form>
+            </f:view>
+        </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

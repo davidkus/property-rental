@@ -25,6 +25,9 @@
                     <c:if test="#{sessionBean.isAgent()}">
                         <h:link value="Create Account" outcome="/agent/create_account" />
                     </c:if>
+                    <c:if test="#{sessionBean.isOwner()}">
+                        <h:link value="Add Property" outcome="/owner/add_property" />
+                    </c:if>
                 </c:when>
                 <c:otherwise>
                     <h:link value="Login" outcome="/login" />
