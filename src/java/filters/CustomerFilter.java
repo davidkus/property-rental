@@ -49,9 +49,8 @@ public class CustomerFilter implements Filter {
             return;
         }
         
-        // This should be changed to some error page saying you don't have permission
-        String loginURL = req.getContextPath() + "/login.xhtml";
-        res.sendRedirect(loginURL);
+        String permissionDeniedUrl = req.getContextPath() + "/permission_denied.xhtml";
+        res.sendRedirect(permissionDeniedUrl);
     }
 
     /**
