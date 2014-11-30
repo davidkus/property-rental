@@ -16,6 +16,7 @@ public class Photo extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String url;
+    private String name;
     private Long size;
 
     public Long getId() {
@@ -40,6 +41,14 @@ public class Photo extends BaseEntity {
 
     public void setSize(Long size) {
         this.size = size;
+    }
+    
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override

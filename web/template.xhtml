@@ -24,6 +24,9 @@
                 <c:if test="#{sessionBean.agent}" >
                     <h:link value="Create Account" outcome="/agent/create_account" />
                 </c:if>
+                <c:if test="#{sessionBean.owner}">
+                     <h:link value="Add Property" outcome="/owner/add_property" />
+                </c:if>
                 <ui:insert name="top"></ui:insert>
             </div>
             
