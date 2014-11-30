@@ -96,12 +96,21 @@ public class ViewPropertiesBean extends BaseBean {
         
         int from = PAGE_SIZE * (pageNumber - 1);
         int to = from + PAGE_SIZE;
+        
+        if ( to >= properties.size() ) {
+            to = properties.size() - 1;
+        }
                 
         return properties.subList(from, to);
     }
     
     public long getPropertyCount() {
         return properties.size();
+    }
+    
+    public long getMaxPages() {
+        long maxPages = (long)Math.ceil(getPropertyCount() / PAGE_SIZE);
+        return maxPages;
     }
     
 }

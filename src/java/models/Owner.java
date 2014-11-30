@@ -25,7 +25,7 @@ public class Owner extends User {
         this.properties = properties;
     }
     
-    public List<Property> getProperties(String orderBy, boolean ascending, int pageSize, int pageNumber, EntityManager em) {
+    public List<Property> getProperties(String orderBy, boolean ascending, EntityManager em) {
         String queryString = "SELECT p FROM Property p WHERE p.owner = :owner";
         
         if (orderBy.equals("bedrooms")) {
@@ -47,16 +47,8 @@ public class Owner extends User {
         Query query = em.createQuery(queryString);
         
         query.setParameter("owner", this);
-        query.setFirstResult((pageNumber - 1) * pageSize);
-        query.setMaxResults(pageSize);
         
         return performQueryList(Property.class, query);
-    }
-    
-    public long getPropertiesCount(EntityManager em) {
-        Query query = em.createQuery("SELECT COUNT(p) FROM Property p WHERE p.owner = :owner");
-        query.setParameter("owner", this);
-        return performQuery(Long.class, query);
     }
     
     public static Owner getByAccount(UserAccount account, EntityManager em) {
