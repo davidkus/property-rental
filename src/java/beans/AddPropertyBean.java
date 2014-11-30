@@ -11,8 +11,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.ExternalContext;
@@ -268,7 +266,7 @@ public class AddPropertyBean extends BaseBean{
         this.photos = photos;
     }
     
-    public void upload(Part part) {
+    public void savePhoto(Part part) {
         try {
             String baseUrl = Photo.getImageFileLocation();
             String fileName = UUID.randomUUID() + "-" + part.getSubmittedFileName();
@@ -292,65 +290,48 @@ public class AddPropertyBean extends BaseBean{
     public void addProperty() {
         try {
             utx.begin();
-            if (type.equals("") || getStreetnumber() == 0 || streetname.equals("") || city.equals("") || province.equals("") || postalcode.equals("") || country.equals("")){
-                status = "Please fill out all the fields before submitting";
+            ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
+            Property property = new Property();
+            Address propertyAddress = new Address();
+            propertyAddress.setStreetNumber(getStreetnumber());
+            propertyAddress.setUnitNumber(unitnumber);
+            propertyAddress.setStreetName(streetname);
+            propertyAddress.setCity(city);
+            propertyAddress.setProvince(province);
+            propertyAddress.setPostalCode(postalcode);
+            propertyAddress.setCountry(country);
+            property.setAddress(propertyAddress);
+            property.setType(type);
+            property.setNumberOfBathrooms(numberofbathrooms);
+            property.setNumberOfBedrooms(numberofbedrooms);
+            property.setNumberOtherRooms(numberofotherrooms);
+            property.setRent(rent);
+            property.setLocation(location);
+            property.setOwner(sessionBean.getOwner());
+            if (photo1 != null){
+                savePhoto(photo1);
             }
-            else if (photo1 == null && photo2 == null && photo3 == null && photo4 == null && photo5 == null){
-                status = "Please insert at least one photo before submitting";
+            if (photo2 != null){
+                savePhoto(photo2);
             }
-            else if (numberofbathrooms <= 0 || numberofbedrooms <= 0){
-                status = "The number of bathrooms and the number of bedrooms must be a number greater than zero";
+            if (photo3 != null){
+                savePhoto(photo3);
             }
-            else if (rent <= 0){
-                status = "Rent must be a real value greater than zero";
+            if (photo4 != null){
+                savePhoto(photo4);
             }
-            else {
-                System.out.println("here2");
-                ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
-                Property property = new Property();
-                Address propertyAddress = new Address();
-                propertyAddress.setStreetNumber(getStreetnumber());
-                propertyAddress.setUnitNumber(unitnumber);
-                propertyAddress.setStreetName(streetname);
-                propertyAddress.setCity(city);
-                propertyAddress.setProvince(province);
-                propertyAddress.setPostalCode(postalcode);
-                propertyAddress.setCountry(country);
-                property.setAddress(propertyAddress);
-                property.setType(type);
-                property.setNumberOfBathrooms(numberofbathrooms);
-                property.setNumberOfBedrooms(numberofbedrooms);
-                property.setNumberOtherRooms(numberofotherrooms);
-                property.setRent(rent);
-                property.setLocation(location);
-                property.setOwner(sessionBean.getOwner());
-                if (photo1 != null){
-                    upload(photo1);
-                }
-                if (photo2 != null){
-                    upload(photo2);
-                }
-                if (photo3 != null){
-                    upload(photo3);
-                }
-                if (photo4 != null){
-                    upload(photo4);
-                }
-                if (photo5 != null){
-                    upload(photo5);
-                }
-                property.setPhotos(photos);
-                
-                em.persist(propertyAddress);
-                em.persist(property);
-                utx.commit();
-                
-                try {
-                    context.redirect(context.getRequestContextPath() + "/owner/property_added_successfully.xhtml");
-                } catch (Exception e) {
-                }
-                
+            if (photo5 != null){
+                savePhoto(photo5);
             }
+            property.setPhotos(photos);
+
+            em.persist(propertyAddress);
+            em.persist(property);
+            utx.commit();
+
+            context.redirect(context.getRequestContextPath() +
+                    "/owner/property_added_successfully.xhtml");
+
         } catch (Exception e) {}
     }
 
