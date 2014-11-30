@@ -21,13 +21,19 @@ public class GreaterThanZeroValidator implements Validator {
                         UIComponent component,
                         Object value)  throws ValidatorException {
         try {
-            Double val = (Double)value;
-            
-            if (val <= 0) {
-                FacesMessage message = new FacesMessage("Value must be greater than zero.");
-                throw new ValidatorException(message);
+            if( value instanceof Double ) {
+                double val = (double)value;
+                if (val <= 0) {
+                    FacesMessage message = new FacesMessage("Value must be greater than zero.");
+                    throw new ValidatorException(message);
+                }
+            } else {
+                long val = (long)value;
+                if (val <= 0) {
+                    FacesMessage message = new FacesMessage("Value must be greater than zero.");
+                    throw new ValidatorException(message);
+                }
             }
-            
         } catch (ClassCastException e) {
             FacesMessage message = new FacesMessage("Value must be a number.");
             throw new ValidatorException(message);

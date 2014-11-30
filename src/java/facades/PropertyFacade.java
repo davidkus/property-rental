@@ -6,6 +6,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import models.Address;
 import models.Customer;
 import models.Owner;
 import models.Property;
@@ -103,6 +104,24 @@ public class PropertyFacade extends BaseFacade {
         query.setParameter("owner", owner);
         
         return performQueryList(Property.class, query);
+    }
+    
+    public boolean addProperty(Property property, Address address, List<models.Photo> photos) {
+        try {
+            utx.begin();
+
+            em.persist(address);
+            for( models.Photo photo : photos ) {
+                em.persist(photo);
+            }
+            em.persist(property);
+            
+            utx.commit();
+            return true;
+
+        } catch (Exception e) {
+            return false;
+        }
     }
     
     public boolean deleteProperty(Property property) {

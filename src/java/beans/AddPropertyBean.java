@@ -5,6 +5,7 @@
  */
 package beans;
 
+import facades.PropertyFacade;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
@@ -26,7 +28,10 @@ import models.Property;
  */
 @ManagedBean
 @RequestScoped
-public class AddPropertyBean extends BaseBean{
+public class AddPropertyBean extends BaseBean {
+    
+    @ManagedProperty(value="#{propertyFacade}")
+    PropertyFacade propertyFacade;
     
     private List<Photo> photos;
     private Part photo1;
@@ -54,6 +59,14 @@ public class AddPropertyBean extends BaseBean{
      */
     public AddPropertyBean() {
         photos = new ArrayList<Photo>();
+    }
+
+    public PropertyFacade getPropertyFacade() {
+        return propertyFacade;
+    }
+
+    public void setPropertyFacade(PropertyFacade propertyFacade) {
+        this.propertyFacade = propertyFacade;
     }
 
     /**
@@ -283,16 +296,16 @@ public class AddPropertyBean extends BaseBean{
             photo.setName(name);
             photo.setSize(size);
             photos.add(photo);
-            em.persist(photo);
+            
         } catch (Exception e) {}
     }
     
     public void addProperty() {
         try {
-            utx.begin();
             ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
             Property property = new Property();
             Address propertyAddress = new Address();
+            
             propertyAddress.setStreetNumber(getStreetnumber());
             propertyAddress.setUnitNumber(unitnumber);
             propertyAddress.setStreetName(streetname);
@@ -300,6 +313,7 @@ public class AddPropertyBean extends BaseBean{
             propertyAddress.setProvince(province);
             propertyAddress.setPostalCode(postalcode);
             propertyAddress.setCountry(country);
+            
             property.setAddress(propertyAddress);
             property.setType(type);
             property.setNumberOfBathrooms(numberofbathrooms);
@@ -308,6 +322,7 @@ public class AddPropertyBean extends BaseBean{
             property.setRent(rent);
             property.setLocation(location);
             property.setOwner(sessionBean.getOwner());
+            
             if (photo1 != null){
                 savePhoto(photo1);
             }
@@ -324,13 +339,11 @@ public class AddPropertyBean extends BaseBean{
                 savePhoto(photo5);
             }
             property.setPhotos(photos);
-
-            em.persist(propertyAddress);
-            em.persist(property);
-            utx.commit();
-
-            context.redirect(context.getRequestContextPath() +
-                    "/owner/property_added_successfully.xhtml");
+            
+            if( propertyFacade.addProperty(property, propertyAddress, photos) ) {
+                context.redirect(context.getRequestContextPath() +
+                        "/owner/property_added_successfully.xhtml");
+            }
 
         } catch (Exception e) {}
     }
