@@ -166,14 +166,7 @@ public class CreateAccountBean extends BaseBean {
         try {
             utx.begin();
             UserAccount checkDuplicate = UserAccount.findByUsername(username, em);
-            System.out.println("Rent " + maxrent + " Type " + type);
-            if (username.equals("") || password.equals("") || email.equals("") || firstname.equals("") || lastname.equals("")) {
-                status = "Please fill out all the fields before submitting";
-            } else if (!username.matches("^[a-zA-Z0-9]*$")) {
-                status = "Please enter only letters and numbers in the username field";
-            } else if (!isValidEmailAddress(email)) {
-                status = "Please enter a valid email address";
-            } else if (checkDuplicate != null){
+            if (checkDuplicate != null){
                 status = "Username already exists in the database, please enter another username.";
             } else if (maxrent <= 0 && type.equals("customer")) {
                 status = "Please enter a max rent greater than zero for a customer account";
@@ -201,13 +194,10 @@ public class CreateAccountBean extends BaseBean {
                 em.persist(account);
                 em.persist(user);
                 utx.commit();
-                try {
-                    context.redirect(context.getRequestContextPath() + "/agent/account_creation_successful.xhtml");
-                } catch (Exception e) {
-                }
-
+                
+                context.redirect(context.getRequestContextPath() +
+                        "/agent/account_creation_successful.xhtml");
             }
-            
         } catch (Exception e) {
         }
 

@@ -13,28 +13,56 @@
         <ui:define name="content">
             <f:view>
                 <h:form>
-                    <h:panelGrid columns="2">
+                    <h:panelGrid columns="3">
+                        
                         <h:outputText value="Account Type" />
-                        <h:selectOneMenu id="types" value="#{createAccountBean.type}">
+                        <h:selectOneMenu id="types" value="#{createAccountBean.type}"
+                                         required="true" requiredMessage="Value is required.">
                             <f:selectItem id="Owner" itemValue="owner" itemLabel="Owner"/>
                             <f:selectItem id="Customer" itemValue="customer" itemLabel="Customer"/>
                             <f:ajax render="@form" />
                         </h:selectOneMenu>
+                        <h:message id="typesMsg" style="color: red" for="types" />
+                        
                         <h:outputText value="First Name" />
-                        <h:inputText id="first" value="#{createAccountBean.firstname}" />   
+                        <h:inputText id="first" value="#{createAccountBean.firstname}"
+                                     required="true" requiredMessage="Value is required."/>
+                        <h:message id="firstMsg" style="color: red" for="first" />
+                        
                         <h:outputText value="Last Name" />
-                        <h:inputText id="last" value="#{createAccountBean.lastname}" />   
+                        <h:inputText id="last" value="#{createAccountBean.lastname}"
+                                     required="true" requiredMessage="Value is required."/> 
+                        <h:message id="lastMsg" style="color: red" for="last" />
+                        
                         <h:outputText value="Email" />
-                        <h:inputText id="email" value="#{createAccountBean.email}" />   
+                        <h:inputText id="email" value="#{createAccountBean.email}"
+                                     required="true" requiredMessage="Value is required.">
+                            <f:validator validatorId="emailValidator" />
+                        </h:inputText> 
+                        <h:message id="emailMsg" style="color: red" for="email" />
+                        
                         <h:outputText value="Username" />
-                        <h:inputText id="user" value="#{createAccountBean.username}" />   
+                        <h:inputText id="user" value="#{createAccountBean.username}"
+                                     required="true" requiredMessage="Value is required."
+                                     validatorMessage="Please enter only letters and numbers in the username field.">
+                            <f:validateRegex pattern="^[a-zA-Z0-9]*$" />
+                        </h:inputText> 
+                        <h:message id="userMsg" style="color: red" for="user" />
+                        
                         <h:outputText value="Password" />
-                        <h:inputSecret id="passwd" value="#{createAccountBean.password}"/>
+                        <h:inputSecret id="passwd" value="#{createAccountBean.password}"
+                                       required="true" requiredMessage="Value is required."/>
+                        <h:message id="passwdMsg" style="color: red" for="passwd" />
+                        
                         <h:outputText style="color: red; font-weight: bold;" value="Max Rent (Customers Only)"/>
-                        <h:inputText id="maxrent" value="#{createAccountBean.maxrent}"/>
+                        <h:inputText id="maxrent" value="#{createAccountBean.maxrent}"
+                                     converterMessage="Value must be a number." />
+                        <h:message id="maxrentMsg" style="color: red" for="maxrent" />
+                        
                     </h:panelGrid>
                     <h:commandButton value="Create Account" type="command"  actionListener="#{createAccountBean.createAccount}">
-                        <f:ajax execute="first last email user passwd types maxrent" render="status"/>
+                        <f:ajax execute="first last email user passwd types maxrent"
+                                render="status firstMsg lastMsg emailMsg userMsg passwdMsg typesMsg maxrentMsg"/>
                     </h:commandButton>      
                     <div>
                         <hr/>
