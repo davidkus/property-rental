@@ -13,36 +13,59 @@
         <ui:define name="content">
             <f:view>
                 <h:form enctype="multipart/form-data">
-                    <h:panelGrid columns="2">
+                    <h:panelGrid columns="3">
                         <h:outputText value="Property Type" />
                         <h:selectOneMenu id="types" value="#{addPropertyBean.type}">
                             <f:selectItem id="house" itemValue="House" itemLabel="House"/>
                             <f:selectItem id="apartment" itemValue="Hpartment" itemLabel="Apartment"/>
                         </h:selectOneMenu>
+                        <h:message id="typesMsg" style="color: red" for="types" />
                         <h:outputText value="Photo 1" />
-                        <h:inputFile id="photo1" value="#{addPropertyBean.photo1}"/>
+                        <h:inputFile id="photo1" value="#{addPropertyBean.photo1}">
+                            <f:validator validatorId="imageValidator" />
+                        </h:inputFile>
+                        <h:message id="photo1Msg" style="color: red" for="photo1" />
                         <h:outputText value="Photo 2" />
-                        <h:inputFile id="photo2" value="#{addPropertyBean.photo2}" required="false"/>
+                        <h:inputFile id="photo2" value="#{addPropertyBean.photo2}" required="false">
+                            <f:validator validatorId="imageValidator" />
+                        </h:inputFile>
+                        <h:message id="photo2Msg" style="color: red" for="photo2" />
                         <h:outputText value="Photo 3" />
-                        <h:inputFile id="photo3" value="#{addPropertyBean.photo3}" required="false"/>
+                        <h:inputFile id="photo3" value="#{addPropertyBean.photo3}" required="false">
+                            <f:validator validatorId="imageValidator" />
+                        </h:inputFile>
+                        <h:message id="photo3Msg" style="color: red" for="photo3" />
                         <h:outputText value="Photo 4" />
-                        <h:inputFile id="photo4" value="#{addPropertyBean.photo4}" required="false"/>
+                        <h:inputFile id="photo4" value="#{addPropertyBean.photo4}" required="false">
+                            <f:validator validatorId="imageValidator" />
+                        </h:inputFile>
+                        <h:message id="photo4Msg" style="color: red" for="photo4" />
                         <h:outputText value="Photo 5" />
-                        <h:inputFile id="photo5" value="#{addPropertyBean.photo5}" required="false"/>
+                        <h:inputFile id="photo5" value="#{addPropertyBean.photo5}" required="false">
+                            <f:validator validatorId="imageValidator" />
+                        </h:inputFile>
+                        <h:message id="photo5Msg" style="color: red" for="photo5" />
                         <h:outputText value="Street Number" />
                         <h:inputText id="streetnumber" value="#{addPropertyBean.streetnumber}" />
+                        <h:message id="streetnumberMsg" style="color: red" for="streetnumber" />
                         <h:outputText value="Unit Number" />
                         <h:inputText id="unitnumber" value="#{addPropertyBean.unitnumber}" />
+                        <h:message id="unitnumberMsg" style="color: red" for="unitnumber" />
                         <h:outputText value="Street Name" />
                         <h:inputText id="streetname" value="#{addPropertyBean.streetname}" />
+                        <h:message id="streetnameMsg" style="color: red" for="streetname" />
                         <h:outputText value="City" />
                         <h:inputText id="city" value="#{addPropertyBean.city}" />
+                        <h:message id="cityMsg" style="color: red" for="city" />
                         <h:outputText value="Province" />
                         <h:inputText id="province" value="#{addPropertyBean.province}" />
+                        <h:message id="provinceMsg" style="color: red" for="province" />
                         <h:outputText value="Postal Code" />
                         <h:inputText id="postalcode" value="#{addPropertyBean.postalcode}" />
+                        <h:message id="postalcodeMsg" style="color: red" for="postalcode" />
                         <h:outputText value="Country" />
-                        <h:inputText id="country" value="#{addPropertyBean.country}" />    
+                        <h:inputText id="country" value="#{addPropertyBean.country}" /> 
+                        <h:message id="countryMsg" style="color: red" for="country" />
                         <h:outputText value="Location" />
                         <h:selectOneMenu id="locationtypes" value="#{addPropertyBean.location}">
                             <f:selectItem id="toronto" itemValue="toronto" itemLabel="Toronto"/>
@@ -55,17 +78,28 @@
                             <f:selectItem id="belleville" itemValue="belleville" itemLabel="Belleville"/>
                             <f:selectItem id="other" itemValue="other" itemLabel="Other"/>
                         </h:selectOneMenu>
+                        <h:message id="locationtypesMsg" style="color: red" for="locationtypes" />
                         <h:outputText value="# of Bathrooms" />
                         <h:inputText id="bathrooms" value="#{addPropertyBean.numberofbathrooms}" />
+                        <h:message id="bathroomsMsg" style="color: red" for="bathrooms" />
                         <h:outputText value="# of Bedrooms" />
                         <h:inputText id="bedrooms" value="#{addPropertyBean.numberofbedrooms}" />
+                        <h:message id="bedroomsMsg" style="color: red" for="bedrooms" />
                         <h:outputText value="# of Other Rooms" />
                         <h:inputText id="otherrooms" value="#{addPropertyBean.numberofotherrooms}" />
+                        <h:message id="otherroomsMsg" style="color: red" for="otherrooms" />
                         <h:outputText value="Rent" />
                         <h:inputText id="rent" value="#{addPropertyBean.rent}" />
+                        <h:message id="rentMsg" style="color: red" for="rent" />
                     </h:panelGrid>
                     <h:commandButton value="Add Property" type="command"  actionListener="#{addPropertyBean.addProperty}">
-                        <f:ajax execute="types streetnumber unitnumber streetname city province postalcode country locationtypes bathrooms bedrooms otherrooms rent photo1 photo2 photo3 photo4 photo5" render="status"/>
+                        <f:ajax execute="types streetnumber unitnumber streetname
+                                city province postalcode country locationtypes bathrooms
+                                bedrooms otherrooms rent photo1 photo2 photo3 photo4 photo5"
+                                render="status typesMsg streetnumberMsg unitnumberMsg
+                                streetnameMsg cityMsg provinceMsg postalcodeMsg countryMsg
+                                locationtypesMsg bathroomsMsg bedroomsMsg otherroomsMsg
+                                rentMsg photo1Msg photo2Msg photo3Msg photo4Msg photo5Msg"/>
                     </h:commandButton>      
                     <div>
                         <hr/>

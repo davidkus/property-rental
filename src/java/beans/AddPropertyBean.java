@@ -289,15 +289,6 @@ public class AddPropertyBean extends BaseBean{
         } catch (Exception e) {}
     }
     
-    public boolean isImage (Part name){
-        System.out.println("here");
-        String fileName = name.getSubmittedFileName();
-        String IMAGE_PATTERN = "([^\\s]+(\\.(?i)(jpg|jpeg|png|gif|bmp))$)";
-        Pattern pattern = Pattern.compile(IMAGE_PATTERN);
-        Matcher matcher = pattern.matcher(fileName);
-        return matcher.matches();
-    }
-    
     public void addProperty() {
         try {
             utx.begin();
