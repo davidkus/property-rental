@@ -5,9 +5,7 @@ import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
-import models.Customer;
 import models.Property;
-import models.UserAccount;
 
 @ManagedBean
 @SessionScoped
@@ -138,37 +136,11 @@ public class ViewPropertiesBean extends BaseBean {
     }
     
     public boolean inVisitingList (Property property){
-        boolean inList = false;
-        Customer customer = sessionBean.getCustomer();
-        List<Property> visitingList = customer.getVisitingList();
-        for (Property prop : visitingList){
-            if (prop.equals(property)){
-                inList = true;
-            }
-        }
-        return inList;
+        return propertyFacade.inVisitingList(property);
     }
     
     public void addToVisitingList(Property property){
-        try {
-            utx.begin();
-            Customer customer = sessionBean.getCustomer();
-            UserAccount user = customer.getUserAccount();
-            List<Property> visitingList = customer.getVisitingList();
-            if (!inVisitingList(property)){
-                if (property.getRent()<=user.getMaxrent()){
-                    visitingList.add(property);
-                    em.merge(visitingList);
-                }
-                else {
-                    status = "Property rent too high";
-                }
-            }
-            else {
-                status = "Property already in visiting list";
-            }
-            utx.commit();
-        } catch (Exception e) {}
+        status = propertyFacade.addToVisitingList(property);
     }
     
 }
