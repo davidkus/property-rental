@@ -75,6 +75,9 @@
                             <f:facet name="header">Status</f:facet>
                             <h:outputText value="#{property.status}"/>
                         </h:column>
+                        <h:column>
+                            <h:commandButton value="Delete" type="command" actionListener="#{ownerViewPropertiesBean.deleteProperty(property)}"/>
+                        </h:column>
                     </h:dataTable>
                     
                     <h:inputHidden id="pageNumber" value="#{ownerViewPropertiesBean.pageNumber}" />
