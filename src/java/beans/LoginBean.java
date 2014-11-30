@@ -61,7 +61,6 @@ public class LoginBean extends BaseBean {
         User user = loginFacade.login(username, password);
         
         if (user != null) {
-            sessionBean.setUser(user);
             try {
                 ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
                 context.redirect(context.getRequestContextPath() + "/index.xhtml");

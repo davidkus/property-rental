@@ -11,11 +11,6 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
-import models.Customer;
-import models.Owner;
-import models.User;
 import models.UserAccount;
 
 /**
@@ -164,56 +159,26 @@ public class CreateAccountBean extends BaseBean {
         this.maxrent = maxrent;
     }
     
-    public static boolean isValidEmailAddress(String email) {
-        boolean result = true;
-        try {
-            InternetAddress emailAddr = new InternetAddress(email);
-            emailAddr.validate();
-        } catch (AddressException ex) {
-            result = false;
-        }
-        return result;
-    }
-    
     public void createAccount() {
-        try {
-            utx.begin();
-            UserAccount checkDuplicate = userAccountFacade.findByUsername(username, em);
-            if (checkDuplicate != null){
-                status = "Username already exists in the database, please enter another username.";
-            } else if (maxrent <= 0 && type.equals("customer")) {
-                status = "Please enter a max rent greater than zero for a customer account";
-            } else if (maxrent != 0 && type.equals("owner")) {
-                status = "If account type is owner, enter a max rent of 0. "
-                        + "If account type if a customer, enter a max rent of greater than 0";
-            } else {
-                ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
-                UserAccount account = new UserAccount();
-                User user;
-                account.setUsername(username);
-                userAccountFacade.setPassword(account, password);
-                account.setEmail(email);
-                account.setFirstname(firstname);
-                account.setLastname(lastname);
-                account.setMaxrent(maxrent);
+        UserAccount checkDuplicate = userAccountFacade.findByUsername(username, em);
+        if (checkDuplicate != null){
+            status = "Username already exists in the database, please enter another username.";
+        } else if (maxrent <= 0 && type.equals("customer")) {
+            status = "Please enter a max rent greater than zero for a customer account";
+        } else if (maxrent != 0 && type.equals("owner")) {
+            status = "If account type is owner, enter a max rent of 0. "
+                    + "If account type if a customer, enter a max rent of greater than 0";
+        } else {
+            ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
+            if( userAccountFacade.createAccount(username, password, email,
+                    firstname, lastname, maxrent, type) ) {
 
-                if (type.equals("owner")) {
-                    user = new Owner();
-                }
-                else {
-                    user = new Customer();
-                }
-                user.setUserAccount(account);
-                em.persist(account);
-                em.persist(user);
-                utx.commit();
-                
-                context.redirect(context.getRequestContextPath() +
+                try {
+                    context.redirect(context.getRequestContextPath() +
                         "/agent/account_creation_successful.xhtml");
+                } catch (Exception e) {}
             }
-        } catch (Exception e) {
         }
-
     }
     
 }

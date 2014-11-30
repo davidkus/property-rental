@@ -12,11 +12,46 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import models.Customer;
+import models.Owner;
+import models.User;
 import models.UserAccount;
 
 @ManagedBean
 @SessionScoped
 public class UserAccountFacade extends BaseFacade {
+    
+    public boolean createAccount(String username, String password, String email,
+            String firstname, String lastname, Double maxrent, String type) {
+        try {
+            utx.begin();
+            
+            UserAccount account = new UserAccount();
+            
+            User user;
+            account.setUsername(username);
+            setPassword(account, password);
+            
+            account.setEmail(email);
+            account.setFirstname(firstname);
+            account.setLastname(lastname);
+            account.setMaxrent(maxrent);
+
+            if (type.equals("owner")) {
+                user = new Owner();
+            }
+            else {
+                user = new Customer();
+            }
+            user.setUserAccount(account);
+            em.persist(account);
+            em.persist(user);
+            utx.commit();
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
     
     public boolean setPassword(UserAccount userAccount, String password) {
         try {
