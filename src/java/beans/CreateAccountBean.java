@@ -5,7 +5,9 @@
  */
 package beans;
 
+import facades.UserAccountFacade;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
@@ -24,6 +26,9 @@ import models.UserAccount;
 @RequestScoped
 public class CreateAccountBean extends BaseBean {
     
+    @ManagedProperty(value="#{userAccountFacade}")
+    UserAccountFacade userAccountFacade;
+    
     private String username;
     private String password;
     private String firstname;
@@ -37,6 +42,14 @@ public class CreateAccountBean extends BaseBean {
      * Creates a new instance of CreateAccountBean
      */
     public CreateAccountBean() {
+    }
+
+    public UserAccountFacade getUserAccountFacade() {
+        return userAccountFacade;
+    }
+
+    public void setUserAccountFacade(UserAccountFacade userAccountFacade) {
+        this.userAccountFacade = userAccountFacade;
     }
 
     /**
@@ -165,7 +178,7 @@ public class CreateAccountBean extends BaseBean {
     public void createAccount() {
         try {
             utx.begin();
-            UserAccount checkDuplicate = UserAccount.findByUsername(username, em);
+            UserAccount checkDuplicate = userAccountFacade.findByUsername(username, em);
             if (checkDuplicate != null){
                 status = "Username already exists in the database, please enter another username.";
             } else if (maxrent <= 0 && type.equals("customer")) {
@@ -178,7 +191,7 @@ public class CreateAccountBean extends BaseBean {
                 UserAccount account = new UserAccount();
                 User user;
                 account.setUsername(username);
-                account.setPassword(password);
+                userAccountFacade.setPassword(account, password);
                 account.setEmail(email);
                 account.setFirstname(firstname);
                 account.setLastname(lastname);

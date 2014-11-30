@@ -1,27 +1,17 @@
 package models;
 
-import java.io.UnsupportedEncodingException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
-import java.util.Arrays;
-import java.util.Random;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.persistence.Entity;
-import javax.persistence.EntityManager;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.OneToOne;
-import javax.persistence.Query;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="user_accounts_5939559")
-public class UserAccount extends BaseEntity {
+public class UserAccount {
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -128,64 +118,6 @@ public class UserAccount extends BaseEntity {
 
     public void setId(Long id) {
         this.id = id;
-    }
-    
-    public User getUser(EntityManager em) {
-        Agent agent = Agent.getByAccount(this, em);
-        if( agent != null ) {
-            return agent;
-        }
-        
-        Customer customer = Customer.getByAccount(this, em);
-        if( customer != null ) {
-            return customer;
-        }
-        
-        Owner owner = Owner.getByAccount(this, em);
-        
-        return owner;
-    }
-    
-    public boolean setPassword(String password) {
-        try {
-            // randomly generate salt value
-            final Random r = new SecureRandom();
-            byte[] salt = new byte[32];
-            r.nextBytes(salt);
-            String saltString = new String(salt, "UTF-8");
-            // hash password using SHA-256 algorithm
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            String saltedPass = saltString+password;
-            byte[] passhash = digest.digest(saltedPass.getBytes("UTF-8"));
-            this.setSalt(salt);
-            this.setPassword(passhash);
-            return true;
-        } catch (UnsupportedEncodingException | NoSuchAlgorithmException | RuntimeException ex) {
-            return false;
-        }
-    }
-    
-    public boolean checkPassword(String password) {
-        try {
-            byte[] salt = this.getSalt();
-            String saltString = new String(salt, "UTF-8");
-            String checkPass = saltString + password;
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            byte[] checkPassHash = digest.digest(checkPass.getBytes("UTF-8"));
-            if (Arrays.equals(checkPassHash, this.getPassword())) {
-                return true; 
-            }
-        } catch (UnsupportedEncodingException | NoSuchAlgorithmException ex) {
-            Logger.getLogger(UserAccount.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return false;
-    }
-    
-    public static UserAccount findByUsername(String username, EntityManager em) {
-        Query query = em.createQuery("SELECT ua FROM UserAccount ua WHERE ua.username = :username");
-        query.setParameter("username", username);
-        UserAccount result = performQuery(UserAccount.class, query);
-        return result;
     }
 
     @Override

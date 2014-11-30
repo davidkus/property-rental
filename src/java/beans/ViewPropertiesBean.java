@@ -1,7 +1,9 @@
 package beans;
 
+import facades.PropertyFacade;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import models.Property;
 
@@ -9,6 +11,9 @@ import models.Property;
 @SessionScoped
 public class ViewPropertiesBean extends BaseBean {
 
+    @ManagedProperty(value="#{propertyFacade}")
+    PropertyFacade propertyFacade;
+    
     private static final int PAGE_SIZE = 25;
     
     private String orderBy = "rent";
@@ -23,9 +28,17 @@ public class ViewPropertiesBean extends BaseBean {
      */
     public ViewPropertiesBean() {
     }
+
+    public PropertyFacade getPropertyFacade() {
+        return propertyFacade;
+    }
+
+    public void setPropertyFacade(PropertyFacade propertyFacade) {
+        this.propertyFacade = propertyFacade;
+    }
     
     public String viewPropertiesByLocation() {
-        properties = Property.getByLocation(location, "rent", true, em);
+        properties = propertyFacade.getByLocation(location, "rent", true, em);
         pageNumber = 1;
         orderBy = "rent";
         ascending = true;
@@ -54,7 +67,7 @@ public class ViewPropertiesBean extends BaseBean {
     
     public void sort() {
         pageNumber = 1;
-        properties = Property.getByLocation(location, orderBy, ascending, em);
+        properties = propertyFacade.getByLocation(location, orderBy, ascending, em);
     }
     
     public String getOrderBy() {

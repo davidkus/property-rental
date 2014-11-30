@@ -1,13 +1,18 @@
 package beans;
 
+import facades.PropertyFacade;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
 import models.Property;
 
 @ManagedBean
 @RequestScoped
 public class OwnerViewPropertiesBean extends BaseBean {
+    
+    @ManagedProperty(value="#{propertyFacade}")
+    PropertyFacade propertyFacade;
     
     private static final int PAGE_SIZE = 25;
     
@@ -20,6 +25,14 @@ public class OwnerViewPropertiesBean extends BaseBean {
      * Creates a new instance of OwnerViewPropertiesBean
      */
     public OwnerViewPropertiesBean() {}
+
+    public PropertyFacade getPropertyFacade() {
+        return propertyFacade;
+    }
+
+    public void setPropertyFacade(PropertyFacade propertyFacade) {
+        this.propertyFacade = propertyFacade;
+    }
 
     public String getOrderBy() {
         return orderBy;
@@ -54,27 +67,27 @@ public class OwnerViewPropertiesBean extends BaseBean {
     }
     
     public void nextPage() {
-        properties = sessionBean.getOwner().getProperties(orderBy, ascending, em);
+        properties = propertyFacade.getOwnerProperties(sessionBean.getOwner(), orderBy, ascending, em);
         if ( hasNextPage() ) {
             pageNumber++;
         }
     }
     
     public void previousPage() {
-        properties = sessionBean.getOwner().getProperties(orderBy, ascending, em);
+        properties = propertyFacade.getOwnerProperties(sessionBean.getOwner(), orderBy, ascending, em);
         if( hasPreviousPage() ) {
             pageNumber--;
         }
     }
     
     public void sort() {
-        properties = sessionBean.getOwner().getProperties(orderBy, ascending, em);
+        properties = propertyFacade.getOwnerProperties(sessionBean.getOwner(), orderBy, ascending, em);
         pageNumber = 1;
     }
     
     public List<Property> getProperties() {
         if (properties == null) {
-            properties = sessionBean.getOwner().getProperties(orderBy, ascending, em);
+            properties = propertyFacade.getOwnerProperties(sessionBean.getOwner(), orderBy, ascending, em);
         }
         
         if (properties.isEmpty()) {
@@ -93,7 +106,7 @@ public class OwnerViewPropertiesBean extends BaseBean {
     
     public long getPropertyCount() {
         if (properties == null) {
-            properties = sessionBean.getOwner().getProperties(orderBy, ascending, em);
+            properties = propertyFacade.getOwnerProperties(sessionBean.getOwner(), orderBy, ascending, em);
         }
         return properties.size();
     }

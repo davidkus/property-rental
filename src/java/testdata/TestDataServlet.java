@@ -1,5 +1,9 @@
 package testdata;
 
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.util.Random;
 import javax.annotation.Resource;
 import javax.persistence.EntityManager;
@@ -14,13 +18,10 @@ import models.Owner;
 import models.Property;
 import models.UserAccount;
 
-/**
- *
- * @author david
- */
+
 @WebServlet
 public class TestDataServlet extends HttpServlet {
-
+    
     @PersistenceContext(unitName = "property-rentalPU")
     private EntityManager em;
 
@@ -39,7 +40,9 @@ public class TestDataServlet extends HttpServlet {
             createOwnerProperties(owner, 50);
                         
             utx.commit();
-        } catch (Exception e) {}
+        } catch (Exception e) {
+            int i = 1;
+        }
     }
 
     private Agent createAgent() {
@@ -48,7 +51,7 @@ public class TestDataServlet extends HttpServlet {
         account.setUsername("agent");
         account.setFirstname("Agent1");
         account.setLastname("Agent1");
-        account.setPassword("test");
+        setPassword(account, "test");
         account.setMaxrent(0.0);
 
         Agent user = new Agent();
@@ -65,7 +68,7 @@ public class TestDataServlet extends HttpServlet {
         account.setUsername("owner");
         account.setFirstname("Owner1");
         account.setLastname("Owner1");
-        account.setPassword("test");
+        setPassword(account, "test");
         account.setMaxrent(0.0);
 
         Owner user = new Owner();
@@ -82,7 +85,7 @@ public class TestDataServlet extends HttpServlet {
         account.setUsername("customer");
         account.setFirstname("Customer1");
         account.setLastname("Customer1");
-        account.setPassword("test");
+        setPassword(account, "test");
         account.setMaxrent(800);
 
         Customer user = new Customer();
@@ -120,6 +123,25 @@ public class TestDataServlet extends HttpServlet {
         address.setStreetNumber(75L);
         em.persist(address);
         return address;
+    }
+    
+    public boolean setPassword(UserAccount userAccount, String password) {
+        try {
+            // randomly generate salt value
+            final Random r = new SecureRandom();
+            byte[] salt = new byte[32];
+            r.nextBytes(salt);
+            String saltString = new String(salt, "UTF-8");
+            // hash password using SHA-256 algorithm
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            String saltedPass = saltString+password;
+            byte[] passhash = digest.digest(saltedPass.getBytes("UTF-8"));
+            userAccount.setSalt(salt);
+            userAccount.setPassword(passhash);
+            return true;
+        } catch (UnsupportedEncodingException | NoSuchAlgorithmException | RuntimeException ex) {
+            return false;
+        }
     }
     
     /**

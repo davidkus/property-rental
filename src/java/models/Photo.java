@@ -10,7 +10,7 @@ import javax.servlet.ServletContext;
 
 @Entity
 @Table(name = "photos_5939559")
-public class Photo extends BaseEntity {
+public class Photo {
     private static final long serialVersionUID = 1L;
 
     @Id
