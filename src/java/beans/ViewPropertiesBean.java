@@ -22,6 +22,7 @@ public class ViewPropertiesBean extends BaseBean {
     private String location;
     private List<Property> properties;
     private Long propertyCount;
+    private String status;
     
     /**
      * Creates a new instance of ViewPropertiesBean
@@ -101,6 +102,14 @@ public class ViewPropertiesBean extends BaseBean {
     public void setLocation(String location) {
         this.location = location;
     }
+    
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
     public List<Property> getProperties() {
         if( properties.isEmpty() ) {
@@ -124,6 +133,14 @@ public class ViewPropertiesBean extends BaseBean {
     public long getMaxPages() {
         long maxPages = (long)Math.ceil(getPropertyCount() / PAGE_SIZE);
         return maxPages;
+    }
+    
+    public boolean inVisitingList (Property property){
+        return propertyFacade.inVisitingList(property);
+    }
+    
+    public void addToVisitingList(Property property){
+        status = propertyFacade.addToVisitingList(property);
     }
     
 }

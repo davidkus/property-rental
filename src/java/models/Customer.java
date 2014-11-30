@@ -1,5 +1,6 @@
 package models;
 
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
@@ -8,6 +9,16 @@ import javax.persistence.InheritanceType;
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
 public class Customer extends User {
     private static final long serialVersionUID = 1L;
+    
+    private List<Property> visitingList;
+    
+    public List<Property> getVisitingList() {
+        return visitingList;
+    }
+
+    public void setVisitingList(List<Property> visitingList) {
+        this.visitingList = visitingList;
+    }
     
     @Override
     public int hashCode() {
