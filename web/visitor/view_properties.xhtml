@@ -43,9 +43,9 @@
                                  var="property" border="1">
                         <h:column>
                             <f:facet name="header">Images</f:facet>
-                            <c:forEach items="#{property.photos}" var="photo">
-                                <h:graphicImage value="#{photo.url}" width="50" height="50" />
-                            </c:forEach>
+                            <ui:repeat value="#{property.photos}" var="photo">
+                                <h:graphicImage value="/images/#{photo.name}" width="50" height="50" />
+                            </ui:repeat>
                         </h:column>
                         <h:column>
                             <f:facet name="header">Type</f:facet>

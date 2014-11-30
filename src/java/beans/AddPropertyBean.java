@@ -5,12 +5,12 @@
  */
 package beans;
 
-import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Scanner;
-import java.util.Set;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.faces.bean.ManagedBean;
@@ -268,24 +268,24 @@ public class AddPropertyBean extends BaseBean{
         this.photos = photos;
     }
     
-    public void upload(Part file) {
+    public void upload(Part part) {
         try {
-            utx.begin();
+            String baseUrl = Photo.getImageFileLocation();
+            String fileName = UUID.randomUUID() + "-" + part.getSubmittedFileName();
+            
+            String filePath = baseUrl + fileName;
+            
+            try (InputStream input = part.getInputStream()) {
+                Files.copy(input, Paths.get(filePath));
+            }
+                        
             Photo photo = new Photo();
-            String name = file.getSubmittedFileName();
-            Long size = file.getSize();
-            String fileContent = "";
-            try{
-                fileContent = new Scanner(file.getInputStream())
-                  .useDelimiter("\\A").next();
-            } catch (IOException e) {}
+            String name = fileName;
+            Long size = part.getSize();
             photo.setName(name);
             photo.setSize(size);
-            photo.setUrl(fileContent);
             photos.add(photo);
             em.persist(photo);
-            em.persist(photos);
-            utx.commit();
         } catch (Exception e) {}
     }
     

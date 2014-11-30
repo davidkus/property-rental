@@ -1,11 +1,12 @@
 package models;
 
-import java.io.Serializable;
+import javax.faces.context.FacesContext;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.servlet.ServletContext;
 
 @Entity
 @Table(name = "photos_5939559")
@@ -15,7 +16,6 @@ public class Photo extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String url;
     private String name;
     private Long size;
 
@@ -25,14 +25,6 @@ public class Photo extends BaseEntity {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
     }
 
     public Long getSize() {
@@ -69,6 +61,12 @@ public class Photo extends BaseEntity {
             return false;
         }
         return true;
+    }
+    
+    public static String getImageFileLocation() {
+        ServletContext servletContext = (ServletContext) FacesContext
+            .getCurrentInstance().getExternalContext().getContext();
+        return servletContext.getInitParameter("seg3102.image_url");
     }
 
     @Override

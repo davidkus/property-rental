@@ -4,21 +4,25 @@
         <param-name>javax.faces.PROJECT_STAGE</param-name>
         <param-value>Development</param-value>
     </context-param>
+    <context-param>
+        <param-name>seg3102.image_url</param-name>
+        <param-value>/Users/david/seg3102-5939559/images/</param-value>
+    </context-param>
     <filter-mapping>
         <filter-name>AuthenticationFilter</filter-name>
-        <url-pattern />
+        <url-pattern/>
     </filter-mapping>
     <filter-mapping>
         <filter-name>AgentFilter</filter-name>
-        <url-pattern />
+        <url-pattern/>
     </filter-mapping>
     <filter-mapping>
         <filter-name>CustomerFilter</filter-name>
-        <url-pattern />
+        <url-pattern/>
     </filter-mapping>
     <filter-mapping>
         <filter-name>OwnerFilter</filter-name>
-        <url-pattern />
+        <url-pattern/>
     </filter-mapping>
     <servlet>
         <servlet-name>Faces Servlet</servlet-name>
@@ -33,7 +37,7 @@
         <servlet-name>TestDataServlet</servlet-name>
         <servlet-class>testdata.TestDataServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
-     </servlet>
+    </servlet>
     <session-config>
         <session-timeout>
             30
