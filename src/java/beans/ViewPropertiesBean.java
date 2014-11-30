@@ -5,7 +5,9 @@ import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
+import models.Customer;
 import models.Property;
+import models.UserAccount;
 
 @ManagedBean
 @SessionScoped
@@ -22,6 +24,7 @@ public class ViewPropertiesBean extends BaseBean {
     private String location;
     private List<Property> properties;
     private Long propertyCount;
+    private String status;
     
     /**
      * Creates a new instance of ViewPropertiesBean
@@ -101,6 +104,14 @@ public class ViewPropertiesBean extends BaseBean {
     public void setLocation(String location) {
         this.location = location;
     }
+    
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
     public List<Property> getProperties() {
         if( properties.isEmpty() ) {
@@ -124,6 +135,40 @@ public class ViewPropertiesBean extends BaseBean {
     public long getMaxPages() {
         long maxPages = (long)Math.ceil(getPropertyCount() / PAGE_SIZE);
         return maxPages;
+    }
+    
+    public boolean inVisitingList (Property property){
+        boolean inList = false;
+        Customer customer = sessionBean.getCustomer();
+        List<Property> visitingList = customer.getVisitingList();
+        for (Property prop : visitingList){
+            if (prop.equals(property)){
+                inList = true;
+            }
+        }
+        return inList;
+    }
+    
+    public void addToVisitingList(Property property){
+        try {
+            utx.begin();
+            Customer customer = sessionBean.getCustomer();
+            UserAccount user = customer.getUserAccount();
+            List<Property> visitingList = customer.getVisitingList();
+            if (!inVisitingList(property)){
+                if (property.getRent()<=user.getMaxrent()){
+                    visitingList.add(property);
+                    em.merge(visitingList);
+                }
+                else {
+                    status = "Property rent too high";
+                }
+            }
+            else {
+                status = "Property already in visiting list";
+            }
+            utx.commit();
+        } catch (Exception e) {}
     }
     
 }

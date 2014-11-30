@@ -75,6 +75,15 @@
                             <f:facet name="header">Rent</f:facet>
                             <h:outputText value="#{property.rent}"/>
                         </h:column>
+                        <h:column>
+                            <h:commandButton value="Add to Visiting List" type="command" actionListener="#{viewPropertiesBean.addToVisitingList(property)}">
+                                <f:ajax render="status"/>
+                            </h:commandButton>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Property in Visiting List</f:facet>
+                            <h:outputText value="#{property.rent}"/>
+                        </h:column>
                     </h:dataTable>
                     
                     <h:inputHidden id="pageNumber" value="#{viewPropertiesBean.pageNumber}" />
@@ -90,6 +99,12 @@
                                      actionListener="#{viewPropertiesBean.nextPage}">
                         <f:ajax execute="pageNumber orderBy ascending" render="pagedResults"/>
                     </h:commandButton>
+                    <div>
+                        <hr/>
+                        <hr/>
+                        <h:outputText style="color:royalblue; font-size: large;
+                                      font-weight: bold" id="status" value="#{viewPropertiesBean.status}"/>
+                    </div>
                     
                 </h:form>
             </f:view>
