@@ -105,4 +105,16 @@ public class PropertyFacade extends BaseFacade {
         return performQueryList(Property.class, query);
     }
     
+    public boolean deleteProperty(Property property) {
+        try{
+            utx.begin();
+            property.setStatus("Deleted");
+            em.merge(property);
+            utx.commit();
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+    
 }

@@ -116,13 +116,8 @@ public class OwnerViewPropertiesBean extends BaseBean {
         return maxPages;
     }
     
-    public void deleteProperty(Property deleteProperty){
-        try{
-            utx.begin();
-            deleteProperty.setStatus("Deleted");
-            em.merge(deleteProperty);
-            utx.commit();
-        } catch (Exception e) {}
+    public void deleteProperty(Property property){
+        propertyFacade.deleteProperty(property);
     }
     
 }
