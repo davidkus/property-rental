@@ -98,4 +98,9 @@ public class OwnerViewPropertiesBean extends BaseBean {
         return properties.size();
     }
     
+    public long getMaxPages() {
+        long maxPages = (long)Math.ceil(getPropertyCount() / PAGE_SIZE);
+        return maxPages;
+    }
+    
 }

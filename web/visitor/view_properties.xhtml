@@ -20,6 +20,8 @@
                         <h:outputText value="There are no properties to display." />
                     </c:if>
                     
+                    <br/>
+                    
                     <h:outputLabel for="orderBy" value="Order By:" />
                     <h:selectOneMenu id="orderBy" value="#{viewPropertiesBean.orderBy}">
                         <f:selectItem itemValue="rent" itemLabel="Rent" />
@@ -37,8 +39,8 @@
                                 execute="orderBy ascending" render="pagedResults" />
                     </h:selectOneMenu>
                     
-                    <h:dataTable cellpadding="10pt" value="#{viewPropertiesBean.properties}"
-                                 var="property">
+                    <h:dataTable cellpadding="5pt" value="#{viewPropertiesBean.properties}"
+                                 var="property" border="1">
                         <h:column>
                             <f:facet name="header">Images</f:facet>
                             <c:forEach items="#{property.photos}" var="photo">
@@ -77,7 +79,7 @@
                     
                     <h:inputHidden id="pageNumber" value="#{viewPropertiesBean.pageNumber}" />
                     
-                    <h:outputText value="Page: #{viewPropertiesBean.pageNumber}" />
+                    <h:outputText value="Page: #{viewPropertiesBean.pageNumber} of #{viewPropertiesBean.maxPages}  " />
                     
                     <h:commandButton value="Previous Page" type="command"
                                      actionListener="#{viewPropertiesBean.previousPage}">
