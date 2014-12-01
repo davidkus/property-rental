@@ -6,7 +6,7 @@
     </context-param>
     <context-param>
         <param-name>seg3102.image_url</param-name>
-        <param-value>/Users/david/seg3102-5939559/images/</param-value>
+        <param-value>C:\Users\Nabil\seg3102\images\</param-value>
     </context-param>
     <filter-mapping>
         <filter-name>AuthenticationFilter</filter-name>

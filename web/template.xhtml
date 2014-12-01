@@ -45,9 +45,17 @@
         </div>
 
         <div id="bottom">
-            David Kus - 5939559
-            Mohammad Hasan Kanjee - 6795550
-            <!-- Add your name / student number here -->
+            David Kus - 5939559 |
+            Mohammad Hasan Kanjee - 6795550 |
+            Nabil Maadarani - 6134578
+            <c:if test="#{sessionBean.loggedIn}" >
+                <div style="float: right">
+                    <h:form>
+                        <h:commandButton value="Logout" type="command"  actionListener="#{loginBean.logout}">
+                        </h:commandButton>
+                    </h:form>
+                </div>
+            </c:if>
         </div>
 
     </h:body>

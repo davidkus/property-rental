@@ -70,4 +70,11 @@ public class LoginBean extends BaseBean {
         }
     }
     
+    public void logout() {
+        ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
+        context.invalidateSession();
+        try {
+        context.redirect(context.getRequestContextPath() + "/logout.xhtml");
+        } catch (Exception e) {}
+    }
 }
