@@ -1,6 +1,7 @@
 package facades;
 
 import static facades.BaseFacade.performQueryList;
+import java.util.ArrayList;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -103,7 +104,13 @@ public class PropertyFacade extends BaseFacade {
         
         query.setParameter("owner", owner);
         
-        return performQueryList(Property.class, query);
+        List<Property> properties = performQueryList(Property.class, query);
+        
+        if( properties == null ) {
+            properties = new ArrayList<Property>();
+        }
+        
+        return properties;
     }
     
     public boolean addProperty(Property property, Address address, List<models.Photo> photos) {

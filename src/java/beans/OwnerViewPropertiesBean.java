@@ -98,7 +98,7 @@ public class OwnerViewPropertiesBean extends BaseBean {
         int to = from + PAGE_SIZE;
                 
         if (to >= properties.size()) {
-            to = properties.size() - 1;
+            to = properties.size();
         }
         
         return properties.subList(from, to);
@@ -112,7 +112,9 @@ public class OwnerViewPropertiesBean extends BaseBean {
     }
     
     public long getMaxPages() {
-        long maxPages = (long)Math.ceil(getPropertyCount() / PAGE_SIZE);
+        double propertyCount = getPropertyCount();
+        double pageSize = PAGE_SIZE;
+        long maxPages = (long)Math.ceil(propertyCount / PAGE_SIZE);
         return maxPages;
     }
     

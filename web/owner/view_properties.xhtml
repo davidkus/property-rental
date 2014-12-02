@@ -15,13 +15,14 @@
             <h1>Owner View Properties</h1>
             <f:view>
                 <h:form id="pagedResults">
-                    
-                    <c:if test="#{ownerViewPropertiesBean.propertyCount == 0}" >
-                        <h:outputText value="There are no properties to display." />
-                    </c:if>
-                    
                     <br/>
                     
+                    <c:choose>
+                    <c:when test="#{ownerViewPropertiesBean.propertyCount == 0}">
+                        <h:outputText value="There are no properties to display." />
+                    </c:when>
+                    <c:otherwise>
+                            
                     <h:outputLabel for="orderBy" value="Order By:" />
                     <h:selectOneMenu id="orderBy" value="#{ownerViewPropertiesBean.orderBy}">
                         <f:selectItem itemValue="rent" itemLabel="Rent" />
@@ -93,6 +94,9 @@
                                      actionListener="#{ownerViewPropertiesBean.nextPage}">
                         <f:ajax execute="pageNumber orderBy ascending" render="pagedResults"/>
                     </h:commandButton>
+                    
+                    </c:otherwise>
+                    </c:choose>
                 </h:form>
             </f:view>
             
