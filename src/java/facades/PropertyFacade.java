@@ -147,6 +147,7 @@ public class PropertyFacade extends BaseFacade {
             property.setNumberOfBedrooms(propertyUpdate.getNumberofbedrooms());
             property.setNumberOtherRooms(propertyUpdate.getNumberofotherrooms());
             property.setRent(propertyUpdate.getRent());
+            property.setPhotos(photos);
             em.persist(property);
             
             utx.commit();

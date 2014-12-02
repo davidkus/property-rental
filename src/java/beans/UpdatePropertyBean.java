@@ -5,6 +5,7 @@
  */
 package beans;
 
+import facades.PhotoFacade;
 import facades.PropertyFacade;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +28,9 @@ public class UpdatePropertyBean extends BaseBean {
     
     @ManagedProperty(value="#{propertyFacade}")
     PropertyFacade propertyFacade;
+    
+    @ManagedProperty(value="#{photoFacade}")
+    PhotoFacade photoFacade;
     
     private static Long oldid;
     private static List<Photo> oldphotos;
@@ -103,6 +107,14 @@ public class UpdatePropertyBean extends BaseBean {
 
     public void setPropertyFacade(PropertyFacade propertyFacade) {
         this.propertyFacade = propertyFacade;
+    }
+
+    public PhotoFacade getPhotoFacade() {
+        return photoFacade;
+    }
+
+    public void setPhotoFacade(PhotoFacade photoFacade) {
+        this.photoFacade = photoFacade;
     }
     
      /**
@@ -412,6 +424,21 @@ public class UpdatePropertyBean extends BaseBean {
     
     public void updateProperty() {
         try {
+            if (photo1 != null){
+                photos.add(photoFacade.savePhoto(photo1));
+            }
+            if (photo2 != null){
+                photos.add(photoFacade.savePhoto(photo2));
+            }
+            if (photo3 != null){
+                photos.add(photoFacade.savePhoto(photo3));
+            }
+            if (photo4 != null){
+                photos.add(photoFacade.savePhoto(photo4));
+            }
+            if (photo5 != null){
+                photos.add(photoFacade.savePhoto(photo5));
+            }
             if( propertyFacade.updateProperty(this, photos) ) {
                     ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
                     context.redirect(context.getRequestContextPath() +

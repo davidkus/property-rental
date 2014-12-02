@@ -5,13 +5,10 @@
  */
 package beans;
 
+import facades.PhotoFacade;
 import facades.PropertyFacade;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
@@ -32,6 +29,9 @@ public class AddPropertyBean extends BaseBean {
     
     @ManagedProperty(value="#{propertyFacade}")
     PropertyFacade propertyFacade;
+    
+    @ManagedProperty(value="#{photoFacade}")
+    PhotoFacade photoFacade;
     
     private List<Photo> photos;
     private Part photo1;
@@ -67,6 +67,14 @@ public class AddPropertyBean extends BaseBean {
 
     public void setPropertyFacade(PropertyFacade propertyFacade) {
         this.propertyFacade = propertyFacade;
+    }
+
+    public PhotoFacade getPhotoFacade() {
+        return photoFacade;
+    }
+
+    public void setPhotoFacade(PhotoFacade photoFacade) {
+        this.photoFacade = photoFacade;
     }
 
     /**
@@ -279,27 +287,6 @@ public class AddPropertyBean extends BaseBean {
         this.photos = photos;
     }
     
-    public void savePhoto(Part part) {
-        try {
-            String baseUrl = Photo.getImageFileLocation();
-            String fileName = UUID.randomUUID() + "-" + part.getSubmittedFileName();
-            
-            String filePath = baseUrl + fileName;
-            
-            try (InputStream input = part.getInputStream()) {
-                Files.copy(input, Paths.get(filePath));
-            }
-                        
-            Photo photo = new Photo();
-            String name = fileName;
-            Long size = part.getSize();
-            photo.setName(name);
-            photo.setSize(size);
-            photos.add(photo);
-            
-        } catch (Exception e) {}
-    }
-    
     public void addProperty() {
         try {
             ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
@@ -324,19 +311,19 @@ public class AddPropertyBean extends BaseBean {
             property.setOwner(sessionBean.getOwner());
             
             if (photo1 != null){
-                savePhoto(photo1);
+                photos.add(photoFacade.savePhoto(photo1));
             }
             if (photo2 != null){
-                savePhoto(photo2);
+                photos.add(photoFacade.savePhoto(photo2));
             }
             if (photo3 != null){
-                savePhoto(photo3);
+                photos.add(photoFacade.savePhoto(photo3));
             }
             if (photo4 != null){
-                savePhoto(photo4);
+                photos.add(photoFacade.savePhoto(photo4));
             }
             if (photo5 != null){
-                savePhoto(photo5);
+                photos.add(photoFacade.savePhoto(photo5));
             }
             property.setPhotos(photos);
             
