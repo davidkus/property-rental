@@ -27,6 +27,9 @@
                 <c:if test="#{sessionBean.owner}">
                      <h:link value="Add Property" outcome="/owner/add_property" />
                 </c:if>
+                <c:if test="#{sessionBean.customer}" >
+                    <h:link value="Search Properties" outcome="/customer/search_properties" />
+                </c:if>
                 <ui:insert name="top"></ui:insert>
             </div>
             
