@@ -1,0 +1,151 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+
+    <body>
+
+        <ui:composition template="./../template.xhtml">
+
+            <ui:define name="content">
+            <f:view>
+                <h:form enctype="multipart/form-data">
+                    <h:panelGrid columns="3">
+                        
+                        <h:outputText value="Property Type" />
+                        <h:inputText id="types" value="#{updatePropertyBean.type}"
+                                     required="true" requiredMessage="Value is required."
+                                     disabled="True" />
+                        <h:message id="typesMsg" style="color: red" for="types" />
+                        
+                        <h:outputText value="Photo 1" />
+                        <h:inputFile id="photo1" value="#{updatePropertyBean.photo1}"
+                                     required="false" requiredMessage="Value is required." >
+                            <f:validator validatorId="imageValidator" />
+                        </h:inputFile>
+                        <h:message id="photo1Msg" style="color: red" for="photo1" />
+                        
+                        <h:outputText value="Photo 2" />
+                        <h:inputFile id="photo2" value="#{updatePropertyBean.photo2}" required="false">
+                            <f:validator validatorId="imageValidator" />
+                        </h:inputFile>
+                        <h:message id="photo2Msg" style="color: red" for="photo2" />
+                        
+                        <h:outputText value="Photo 3" />
+                        <h:inputFile id="photo3" value="#{updatePropertyBean.photo3}" required="false">
+                            <f:validator validatorId="imageValidator" />
+                        </h:inputFile>
+                        <h:message id="photo3Msg" style="color: red" for="photo3" />
+                        
+                        <h:outputText value="Photo 4" />
+                        <h:inputFile id="photo4" value="#{updatePropertyBean.photo4}" required="false">
+                            <f:validator validatorId="imageValidator" />
+                        </h:inputFile>
+                        <h:message id="photo4Msg" style="color: red" for="photo4" />
+                        
+                        <h:outputText value="Photo 5" />
+                        <h:inputFile id="photo5" value="#{updatePropertyBean.photo5}" required="false">
+                            <f:validator validatorId="imageValidator" />
+                        </h:inputFile>
+                        <h:message id="photo5Msg" style="color: red" for="photo5" />
+                        
+                        <h:outputText value="Street Number" />
+                        <h:inputText id="streetnumber" value="#{updatePropertyBean.streetnumber}"
+                                     required="true" requiredMessage="Value is required."
+                                     disabled="True" />
+                        <h:message id="streetnumberMsg" style="color: red" for="streetnumber" />
+                        
+                        <h:outputText value="Unit Number" />
+                        <h:inputText id="unitnumber" value="#{updatePropertyBean.unitnumber}"
+                                     disabled="True" />
+                        <h:message id="unitnumberMsg" style="color: red" for="unitnumber" />
+                        
+                        <h:outputText value="Street Name" />
+                        <h:inputText id="streetname" value="#{updatePropertyBean.streetname}"
+                                     required="true" disabled="True" />
+                        <h:message id="streetnameMsg" style="color: red" for="streetname" />
+                        
+                        <h:outputText value="City" />
+                        <h:inputText id="city" value="#{updatePropertyBean.city}"
+                                     required="true" disabled="True" />
+                        <h:message id="cityMsg" style="color: red" for="city" />
+                        
+                        <h:outputText value="Province" />
+                        <h:inputText id="province" value="#{updatePropertyBean.province}"
+                                     required="true" disabled="True" />
+                        <h:message id="provinceMsg" style="color: red" for="province" />
+                        
+                        <h:outputText value="Postal Code" />
+                        <h:inputText id="postalcode" value="#{updatePropertyBean.postalcode}"
+                                     required="true" disabled="True" >
+                            <f:validator validatorId="postalCodeValidator" />
+                        </h:inputText>
+                        <h:message id="postalcodeMsg" style="color: red" for="postalcode" />
+                        
+                        <h:outputText value="Country" />
+                        <h:inputText id="country" value="#{updatePropertyBean.country}" 
+                                     required="true" disabled="True" /> 
+                        <h:message id="countryMsg" style="color: red" for="country" />
+                        
+                        <h:outputText value="Location" />
+                        <h:inputText id="locationtypes" value="#{updatePropertyBean.location}" 
+                                     required="true" disabled="True" />                        
+                        <h:message id="locationtypesMsg" style="color: red" for="locationtypes" />
+                        
+                        <h:outputText value="# of Bathrooms" />
+                        <h:inputText id="bathrooms" value="#{updatePropertyBean.numberofbathrooms}"
+                                     required="true" requiredMessage="Value is required."
+                                     converterMessage="Value must be a number." >
+                            <f:validator validatorId="gtZeroValidator" />
+                        </h:inputText>
+                        <h:message id="bathroomsMsg" style="color: red" for="bathrooms" />
+                        
+                        <h:outputText value="# of Bedrooms" />
+                        <h:inputText id="bedrooms" value="#{updatePropertyBean.numberofbedrooms}"
+                                     required="true" requiredMessage="Value is required."
+                                     converterMessage="Value must be a number." >
+                            <f:validator validatorId="gtZeroValidator" />
+                        </h:inputText>
+                        <h:message id="bedroomsMsg" style="color: red" for="bedrooms" />
+                        
+                        <h:outputText value="# of Other Rooms" />
+                        <h:inputText id="otherrooms" value="#{updatePropertyBean.numberofotherrooms}"
+                                     required="true" requiredMessage="Value is required."
+                                     converterMessage="Value must be a number." >
+                        </h:inputText>
+                        <h:message id="otherroomsMsg" style="color: red" for="otherrooms" />
+                        
+                        <h:outputText value="Rent" />
+                        <h:inputText id="rent" value="#{updatePropertyBean.rent}"
+                                     required="true" requiredMessage="Value is required."
+                                     converterMessage="Value must be a number." >
+                            <f:validator validatorId="gtZeroValidator" />
+                        </h:inputText>
+                        <h:message id="rentMsg" style="color: red" for="rent" />
+                        
+                    </h:panelGrid>
+                    <h:commandButton value="Update Property" type="command"  actionListener="#{updatePropertyBean.updateProperty}">
+                        <f:ajax execute="types streetnumber unitnumber streetname
+                                city province postalcode country locationtypes bathrooms
+                                bedrooms otherrooms rent photo1 photo2 photo3 photo4 photo5"
+                                render="status typesMsg streetnumberMsg unitnumberMsg
+                                streetnameMsg cityMsg provinceMsg postalcodeMsg countryMsg
+                                locationtypesMsg bathroomsMsg bedroomsMsg otherroomsMsg
+                                rentMsg photo1Msg photo2Msg photo3Msg photo4Msg photo5Msg"/>
+                    </h:commandButton>      
+                    <div>
+                        <hr/>
+                        <hr/>
+                        <h:outputText style="color:royalblue; font-size: large;
+                                      font-weight: bold" id="status" value="#{updatePropertyBean.status}"/>
+                    </div>
+                </h:form>
+            </f:view>
+        </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

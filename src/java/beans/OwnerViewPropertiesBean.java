@@ -5,7 +5,10 @@ import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 import models.Property;
+import beans.UpdatePropertyBean;
 
 @ManagedBean
 @RequestScoped
@@ -121,5 +124,4 @@ public class OwnerViewPropertiesBean extends BaseBean {
     public void deleteProperty(Property property){
         propertyFacade.deleteProperty(property);
     }
-    
 }

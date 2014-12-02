@@ -107,7 +107,10 @@ public class TestDataServlet extends HttpServlet {
             property.setNumberOfBathrooms((long)rand.nextInt(10) + 1);
             property.setNumberOfBedrooms((long)rand.nextInt(10) + 1);
             property.setNumberOtherRooms((long)rand.nextInt(10) + 1);
-            property.setType("House");
+            if(rand.nextInt() % 2 == 0)
+                property.setType("House");
+            else
+                property.setType("Apartment");
             property.setRent(rand.nextDouble() * 1000);
             em.persist(property);
         }

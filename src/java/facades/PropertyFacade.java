@@ -1,5 +1,6 @@
 package facades;
 
+import beans.UpdatePropertyBean;
 import static facades.BaseFacade.performQueryList;
 import java.util.ArrayList;
 import java.util.List;
@@ -131,6 +132,30 @@ public class PropertyFacade extends BaseFacade {
         }
     }
     
+    public boolean updateProperty(UpdatePropertyBean propertyUpdate, List<models.Photo> photos) {
+        try {
+            utx.begin();
+            String queryString = "SELECT p FROM Property p WHERE p.id = :id";
+            Query query = em.createQuery(queryString);
+            query.setParameter("id", propertyUpdate.getId());
+            Property property = performQuery(Property.class, query);
+            
+            for( models.Photo photo : photos ) {
+                em.persist(photo);
+            }
+            property.setNumberOfBathrooms(propertyUpdate.getNumberofbathrooms());
+            property.setNumberOfBedrooms(propertyUpdate.getNumberofbedrooms());
+            property.setNumberOtherRooms(propertyUpdate.getNumberofotherrooms());
+            property.setRent(propertyUpdate.getRent());
+            em.persist(property);
+            
+            utx.commit();
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+    
     public boolean deleteProperty(Property property) {
         try{
             utx.begin();
@@ -142,5 +167,4 @@ public class PropertyFacade extends BaseFacade {
             return false;
         }
     }
-    
 }

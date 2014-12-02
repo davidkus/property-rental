@@ -77,6 +77,9 @@
                             <h:outputText value="#{property.status}"/>
                         </h:column>
                         <h:column>
+                            <h:commandButton value="Update" type="command" actionListener="#{updatePropertyBean.navToUpdatePage(property)}"/>
+                        </h:column>
+                        <h:column>
                             <h:commandButton value="Delete" type="command" actionListener="#{ownerViewPropertiesBean.deleteProperty(property)}"/>
                         </h:column>
                     </h:dataTable>
