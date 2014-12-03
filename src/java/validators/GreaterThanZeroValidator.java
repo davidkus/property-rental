@@ -30,7 +30,7 @@ public class GreaterThanZeroValidator implements Validator {
                     throw new ValidatorException(message);
                 }
             } else {
-                long val = (long)value;
+                int val = (int)value;
                 if (val <= 0) {
                     FacesMessage message = new FacesMessage("Value must be greater than zero.");
                     throw new ValidatorException(message);
