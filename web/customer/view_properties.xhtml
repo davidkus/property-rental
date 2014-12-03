@@ -76,10 +76,6 @@
                             <h:outputText value="#{property.rent}"/>
                         </h:column>
                         <h:column>
-                            <f:facet name="header">Property in Visiting List</f:facet>
-                            <h:outputText value="#{property.rent}"/>
-                        </h:column>
-                        <h:column>
                             <h:commandButton value="Add to Visiting List" type="command" actionListener="#{viewPropertiesBean.addToVisitingList(property)}">
                                 <f:ajax render="status"/>
                             </h:commandButton>
