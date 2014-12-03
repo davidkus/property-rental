@@ -54,6 +54,7 @@
                         <h:outputText value="# of Other Rooms" />
                         <h:inputText id="otherrooms" value="#{searchPropertyBean.numberofotherrooms}"
                                      required="false" converterMessage="Value must be a positive number." >
+                        <f:validator validatorId="gtZeroValidator" />
                         </h:inputText>
                         <h:message id="otherroomsMsg" style="color: red" for="otherrooms" />
                         

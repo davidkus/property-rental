@@ -127,6 +127,7 @@
                         <h:inputText id="otherrooms" value="#{addPropertyBean.numberofotherrooms}"
                                      required="true" requiredMessage="Value is required."
                                      converterMessage="Value must be a number." >
+                            <f:validator validatorId="gtZeroValidator" />
                         </h:inputText>
                         <h:message id="otherroomsMsg" style="color: red" for="otherrooms" />
                         
