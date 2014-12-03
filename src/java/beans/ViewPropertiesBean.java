@@ -119,9 +119,10 @@ public class ViewPropertiesBean extends BaseBean {
     }
 
     public List<Property> getProperties() {
-        if( properties.isEmpty() ) {
+        if (properties == null)
+            return null;
+        if( properties.isEmpty() )
             return properties;
-        }
         
         int from = PAGE_SIZE * (pageNumber - 1);
         int to = from + PAGE_SIZE;
@@ -134,6 +135,8 @@ public class ViewPropertiesBean extends BaseBean {
     }
     
     public long getPropertyCount() {
+        if (properties == null)
+            return 0;
         return properties.size();
     }
     
