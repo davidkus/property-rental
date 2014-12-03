@@ -30,6 +30,9 @@
                 <c:if test="#{sessionBean.customer}" >
                     <h:link value="Search Properties" outcome="/customer/search_properties" />
                 </c:if>
+                <c:if test="#{sessionBean.customer}" >
+                    <h:link value="View Visiting List" outcome="/customer/view_visiting_list" />
+                </c:if>
                 <ui:insert name="top"></ui:insert>
             </div>
             

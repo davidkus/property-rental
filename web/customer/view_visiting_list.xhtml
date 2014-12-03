@@ -1,0 +1,103 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <body>
+
+        <ui:composition template="./../template.xhtml">
+
+            <ui:define name="content">
+                <h1>Customer Visiting List</h1>
+            <f:view>
+                <h:form id="pagedResults">
+                    <br/>
+                    
+                    <c:choose>
+                    <c:when test="#{viewVisitingListBean.propertyCount == 0}">
+                        <h:outputText value="There are no properties to display." />
+                    </c:when>
+                    <c:otherwise>
+                            
+                    <h:outputLabel for="orderBy" value="Order By:" />
+                    <h:selectOneMenu id="orderBy" value="#{viewVisitingListBean.orderBy}">
+                        <f:selectItem itemValue="rent" itemLabel="Rent" />
+                        <f:selectItem itemValue="bedrooms" itemLabel="Number of Bedrooms" />
+                        <f:selectItem itemValue="bathrooms" itemLabel="Number of Bathrooms" />
+                        <f:selectItem itemValue="otherrooms" itemLabel="Number of Other Rooms" />
+                        <f:ajax event="change" listener="#{viewVisitingListBean.sort}"
+                                execute="orderBy ascending" render="pagedResults" /> 
+                    </h:selectOneMenu>
+                    
+                    <h:selectOneMenu id="ascending" value="#{viewVisitingListBean.ascending}">
+                        <f:selectItem itemValue="true" itemLabel="Ascending" />
+                        <f:selectItem itemValue="false" itemLabel="Descending" />
+                        <f:ajax event="change" listener="#{viewVisitingListBean.sort}"
+                                execute="orderBy ascending" render="pagedResults" />
+                    </h:selectOneMenu>
+                    
+                    <h:dataTable cellpadding="5pt" value="#{viewVisitingListBean.properties}"
+                                 var="property" border="1">
+                        <h:column>
+                            <f:facet name="header">Images</f:facet>
+                            <ui:repeat value="#{property.photos}" var="photo">
+                                <h:graphicImage value="/images/#{photo.name}" width="50" height="50" />
+                            </ui:repeat>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Type</f:facet>
+                            <h:outputText value="#{property.type}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Address</f:facet>
+                            <h:outputText value="#{property.address.streetNumber} #{property.address.streetName}, #{property.address.city}, #{property.address.country}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Number of Bedrooms</f:facet>
+                            <h:outputText value="#{property.numberOfBedrooms}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Number of Bathrooms</f:facet>
+                            <h:outputText value="#{property.numberOfBathrooms}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Number of Other Rooms</f:facet>
+                            <h:outputText value="#{property.numberOtherRooms}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Rent</f:facet>
+                            <h:outputText value="#{property.rent}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Status</f:facet>
+                            <h:outputText value="#{property.status}"/>
+                        </h:column>
+                    </h:dataTable>
+                    
+                    <h:inputHidden id="pageNumber" value="#{viewVisitingListBean.pageNumber}" />
+                                  
+                    <h:outputText value="Page: #{viewVisitingListBean.pageNumber} of #{viewVisitingListBean.maxPages}  " />
+                    
+                    <h:commandButton value="Previous Page" type="command"
+                                     actionListener="#{viewVisitingListBean.previousPage}">
+                        <f:ajax execute="pageNumber orderBy ascending" render="pagedResults"/>
+                    </h:commandButton>
+                    
+                    <h:commandButton value="Next Page" type="command"
+                                     actionListener="#{viewVisitingListBean.nextPage}">
+                        <f:ajax execute="pageNumber orderBy ascending" render="pagedResults"/>
+                    </h:commandButton>
+                    
+                    </c:otherwise>
+                    </c:choose>
+                </h:form>
+            </f:view>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

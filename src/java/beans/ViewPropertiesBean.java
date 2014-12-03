@@ -30,6 +30,8 @@ public class ViewPropertiesBean extends BaseBean {
     private Long propertyCount;
     private String status;
     
+    private List<Property>visitingList;
+    
     /**
      * Creates a new instance of ViewPropertiesBean
      */
@@ -251,6 +253,20 @@ public class ViewPropertiesBean extends BaseBean {
      */
     public void setLocation(List<String> location) {
         this.location = location;
+    }
+
+    /**
+     * @return the visitingList
+     */
+    public List<Property> getVisitingList() {
+        return visitingList;
+    }
+
+    /**
+     * @param visitingList the visitingList to set
+     */
+    public void setVisitingList(List<Property> visitingList) {
+        this.visitingList = visitingList;
     }
     
 }

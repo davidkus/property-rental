@@ -27,7 +27,7 @@ public class PropertyFacade extends BaseFacade {
             if (!inVisitingList(property)){
                 if ( property.getRent() <= account.getMaxrent() ){
                     visitingList.add(property);
-                    em.merge(visitingList);
+                    em.merge(customer);                    
                 }
                 else {
                     return "Property rent too high";
@@ -40,7 +40,7 @@ public class PropertyFacade extends BaseFacade {
         } catch (Exception e) {
             return "Unable to add property to visiting list";
         }
-        return null;
+        return "Property added to visiting list";
     }
     
     public boolean inVisitingList(Property property){
@@ -161,6 +161,39 @@ public class PropertyFacade extends BaseFacade {
         Query query = em.createQuery(queryString);
         
         query.setParameter("owner", owner);
+        
+        List<Property> properties = performQueryList(Property.class, query);
+        
+        if( properties == null ) {
+            properties = new ArrayList<Property>();
+        }
+        
+        return properties;
+    }
+    
+    public List<Property> getVisitingList(Customer customer, String orderBy, boolean ascending, EntityManager em) {
+        // FIXME
+        String queryString = "SELECT p FROM USERS_5939559_PROPERTIES_5939559 p WHERE p.customer = :customer";
+        
+        if (orderBy.equals("bedrooms")) {
+            queryString += "  ORDER BY p.numberOfBedrooms ";
+        } else if (orderBy.equals("bathrooms")) {
+            queryString += "  ORDER BY p.numberOfBathrooms ";
+        } else if (orderBy.equals("otherrooms")) {
+            queryString += "  ORDER BY p.numberOtherRooms ";
+        } else {
+            queryString += "  ORDER BY p.rent ";
+        }
+        
+        if (ascending) {
+            queryString += "ASC";
+        } else {
+            queryString += "DESC";
+        }
+        
+        Query query = em.createQuery(queryString);
+        
+        query.setParameter("customer", customer);
         
         List<Property> properties = performQueryList(Property.class, query);
         

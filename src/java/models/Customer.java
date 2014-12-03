@@ -1,5 +1,6 @@
 package models;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
@@ -10,7 +11,7 @@ import javax.persistence.InheritanceType;
 public class Customer extends User {
     private static final long serialVersionUID = 1L;
     
-    private List<Property> visitingList;
+    private List<Property> visitingList = new ArrayList<Property>();
     
     public List<Property> getVisitingList() {
         return visitingList;
