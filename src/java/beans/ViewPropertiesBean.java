@@ -46,14 +46,6 @@ public class ViewPropertiesBean extends BaseBean {
         this.propertyFacade = propertyFacade;
     }
     
-    public String viewPropertiesByLocation() {
-        properties = propertyFacade.getByLocation(getLocation().get(0), "rent", true, em);
-        pageNumber = 1;
-        orderBy = "rent";
-        ascending = true;
-        return "/customer/view_properties.xhtml";
-    }
-    
     public String viewPropertiesFromSearch() {
         properties = propertyFacade.getByEverything(getLocation(), getType(), getNumberofbedrooms(), getNumberofbathrooms(),
                 getNumberofotherrooms(), getMinrent(), getMaxrent(), "rent", true, em);
@@ -85,7 +77,8 @@ public class ViewPropertiesBean extends BaseBean {
     
     public void sort() {
         pageNumber = 1;
-        properties = propertyFacade.getByLocation(getLocation().get(0), orderBy, ascending, em);
+        properties = propertyFacade.getByEverything(getLocation(), getType(), getNumberofbedrooms(), getNumberofbathrooms(),
+                        getNumberofotherrooms(), getMinrent(), getMaxrent(), orderBy, ascending, em);
     }
     
     public String getOrderBy() {

@@ -55,33 +55,6 @@ public class PropertyFacade extends BaseFacade {
         return inList;
     }
     
-    public List<Property> getByLocation(String location, String orderBy, boolean ascending, EntityManager em) {
-        String queryString = "SELECT p FROM Property p WHERE p.location = :location AND p.status = :status";
-        
-        if (orderBy.equals("bedrooms")) {
-            queryString += "  ORDER BY p.numberOfBedrooms ";
-        } else if (orderBy.equals("bathrooms")) {
-            queryString += "  ORDER BY p.numberOfBathrooms ";
-        } else if (orderBy.equals("otherrooms")) {
-            queryString += "  ORDER BY p.numberOtherRooms ";
-        } else {
-            queryString += "  ORDER BY p.rent ";
-        }
-        
-        if (ascending) {
-            queryString += "ASC";
-        } else {
-            queryString += "DESC";
-        }
-        
-        Query query = em.createQuery(queryString);
-        
-        query.setParameter("location", location);
-        query.setParameter("status", "Active");
-        
-        return performQueryList(Property.class, query);
-    }
-    
     public List<Property> getByEverything(List<String> location, String type, int numberofbedrooms, int numberofbathrooms,
             int numberofotherrooms, double minrent, double maxrent, String orderBy, boolean ascending, EntityManager em) {
         String queryString = "SELECT p FROM Property p WHERE p.status = :status";
@@ -172,8 +145,8 @@ public class PropertyFacade extends BaseFacade {
     }
     
     public List<Property> getVisitingList(Customer customer, String orderBy, boolean ascending, EntityManager em) {
-        // FIXME
-        String queryString = "SELECT p FROM USERS_5939559_PROPERTIES_5939559 p WHERE p.customer = :customer";
+
+        String queryString = "SELECT p FROM Customer c join c.visitingList p WHERE c = :customer";
         
         if (orderBy.equals("bedrooms")) {
             queryString += "  ORDER BY p.numberOfBedrooms ";
