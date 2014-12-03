@@ -27,11 +27,14 @@ public class SearchPropertyBean extends BaseBean {
     @ManagedProperty(value="#{propertyFacade}")
     PropertyFacade propertyFacade;
     
+    @ManagedProperty(value="#{viewPropertiesBean}")
+    private ViewPropertiesBean viewPropertiesBean;
+    
     private String type;    
     private List<String> locations;
-    private Long numberofbedrooms;
-    private Long numberofbathrooms;
-    private Long numberofotherrooms;
+    private int numberofbedrooms;
+    private int numberofbathrooms;
+    private int numberofotherrooms;
     private double minrent;
     private double maxrent;
 
@@ -66,98 +69,60 @@ public class SearchPropertyBean extends BaseBean {
     /**
      * @return the numberofbedrooms
      */
-    public Long getNumberofbedrooms() {
+    public int getNumberofbedrooms() {
         return numberofbedrooms;
     }
 
     /**
      * @param numberofbedrooms the numberofbedrooms to set
      */
-    public void setNumberofbedrooms(Long numberofbedrooms) {
+    public void setNumberofbedrooms(int numberofbedrooms) {
         this.numberofbedrooms = numberofbedrooms;
     }
 
     /**
      * @return the numberofbathrooms
      */
-    public Long getNumberofbathrooms() {
+    public int getNumberofbathrooms() {
         return numberofbathrooms;
     }
 
     /**
      * @param numberofbathrooms the numberofbathrooms to set
      */
-    public void setNumberofbathrooms(Long numberofbathrooms) {
+    public void setNumberofbathrooms(int numberofbathrooms) {
         this.numberofbathrooms = numberofbathrooms;
     }
 
     /**
      * @return the numberofotherrooms
      */
-    public Long getNumberofotherrooms() {
+    public int getNumberofotherrooms() {
         return numberofotherrooms;
     }
 
     /**
      * @param numberofotherrooms the numberofotherrooms to set
      */
-    public void setNumberofotherrooms(Long numberofotherrooms) {
+    public void setNumberofotherrooms(int numberofotherrooms) {
         this.numberofotherrooms = numberofotherrooms;
     }
     
-    public void searchProperty() {
-        System.out.println(getLocations().toString());
-        System.out.println(getType());
-        System.out.println(getNumberofbedrooms());
-        System.out.println(getNumberofbathrooms());
-        System.out.println(getNumberofotherrooms());
-        System.out.println(getMinrent());
-        System.out.println(getMaxrent());
-//        try {
-//            ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
-//            Property property = new Property();
-//            Address propertyAddress = new Address();
-//            
-//            propertyAddress.setStreetNumber(getStreetnumber());
-//            propertyAddress.setUnitNumber(unitnumber);
-//            propertyAddress.setStreetName(streetname);
-//            propertyAddress.setCity(city);
-//            propertyAddress.setProvince(province);
-//            propertyAddress.setPostalCode(postalcode);
-//            propertyAddress.setCountry(country);
-//            
-//            property.setAddress(propertyAddress);
-//            property.setType(type);
-//            property.setNumberOfBathrooms(numberofbathrooms);
-//            property.setNumberOfBedrooms(numberofbedrooms);
-//            property.setNumberOtherRooms(numberofotherrooms);
-//            property.setRent(rent);
-//            property.setLocation(location);
-//            property.setOwner(sessionBean.getOwner());
-//            
-//            if (photo1 != null){
-//                photos.add(photoFacade.savePhoto(photo1));
-//            }
-//            if (photo2 != null){
-//                photos.add(photoFacade.savePhoto(photo2));
-//            }
-//            if (photo3 != null){
-//                photos.add(photoFacade.savePhoto(photo3));
-//            }
-//            if (photo4 != null){
-//                photos.add(photoFacade.savePhoto(photo4));
-//            }
-//            if (photo5 != null){
-//                photos.add(photoFacade.savePhoto(photo5));
-//            }
-//            property.setPhotos(photos);
-//            
-//            if( propertyFacade.addProperty(property, propertyAddress, photos) ) {
-//                context.redirect(context.getRequestContextPath() +
-//                        "/owner/property_added_successfully.xhtml");
-//            }
-//
-//        } catch (Exception e) {}
+    public void searchProperty() {     
+        viewPropertiesBean.setLocation(getLocations());
+        viewPropertiesBean.setType(getType());
+        viewPropertiesBean.setNumberofbedrooms(getNumberofbedrooms());
+        viewPropertiesBean.setNumberofbathrooms(getNumberofbathrooms());
+        viewPropertiesBean.setNumberofotherrooms(getNumberofotherrooms());
+        viewPropertiesBean.setMinrent(getMinrent());
+        viewPropertiesBean.setMaxrent(getMaxrent());
+        
+        String next = viewPropertiesBean.viewPropertiesFromSearch();
+        try {
+            ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
+            context.redirect(context.getRequestContextPath() +
+                    next);
+        } catch (Exception e) {}
     }    
 
     /**
@@ -200,5 +165,19 @@ public class SearchPropertyBean extends BaseBean {
      */
     public void setMaxrent(double maxrent) {
         this.maxrent = maxrent;
+    }
+
+    /**
+     * @return the propertiesBean
+     */
+    public ViewPropertiesBean getViewPropertiesBean() {
+        return viewPropertiesBean;
+    }
+
+    /**
+     * @param propertiesBean the propertiesBean to set
+     */
+    public void setViewPropertiesBean(ViewPropertiesBean viewPropertiesBean) {
+        this.viewPropertiesBean = viewPropertiesBean;
     }
 }

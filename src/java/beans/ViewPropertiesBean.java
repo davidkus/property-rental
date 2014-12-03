@@ -19,7 +19,13 @@ public class ViewPropertiesBean extends BaseBean {
     private String orderBy = "rent";
     private boolean ascending = true;
     private int pageNumber = 1;
-    private String location;
+    private List<String> location;
+    private String type;
+    private int numberofbedrooms;
+    private int numberofbathrooms;
+    private int numberofotherrooms;
+    private double minrent;
+    private double maxrent;
     private List<Property> properties;
     private Long propertyCount;
     private String status;
@@ -39,11 +45,20 @@ public class ViewPropertiesBean extends BaseBean {
     }
     
     public String viewPropertiesByLocation() {
-        properties = propertyFacade.getByLocation(location, "rent", true, em);
+        properties = propertyFacade.getByLocation(getLocation().get(0), "rent", true, em);
         pageNumber = 1;
         orderBy = "rent";
         ascending = true;
-        return "/visitor/view_properties";
+        return "/customer/view_properties.xhtml";
+    }
+    
+    public String viewPropertiesFromSearch() {
+        properties = propertyFacade.getByEverything(getLocation(), getType(), getNumberofbedrooms(), getNumberofbathrooms(),
+                getNumberofotherrooms(), getMinrent(), getMaxrent(), "rent", true, em);
+        pageNumber = 1;
+        orderBy = "rent";
+        ascending = true;
+        return "/customer/view_properties.xhtml";
     }
     
     public boolean hasPreviousPage() {
@@ -68,7 +83,7 @@ public class ViewPropertiesBean extends BaseBean {
     
     public void sort() {
         pageNumber = 1;
-        properties = propertyFacade.getByLocation(location, orderBy, ascending, em);
+        properties = propertyFacade.getByLocation(getLocation().get(0), orderBy, ascending, em);
     }
     
     public String getOrderBy() {
@@ -93,14 +108,6 @@ public class ViewPropertiesBean extends BaseBean {
 
     public void setPageNumber(int pageNumber) {
         this.pageNumber = pageNumber;
-    }
-
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
     }
     
     public String getStatus() {
@@ -143,6 +150,104 @@ public class ViewPropertiesBean extends BaseBean {
     
     public void addToVisitingList(Property property){
         status = propertyFacade.addToVisitingList(property);
+    }
+
+    /**
+     * @return the type
+     */
+    public String getType() {
+        return type;
+    }
+
+    /**
+     * @param type the type to set
+     */
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    /**
+     * @return the numberofbedrooms
+     */
+    public int getNumberofbedrooms() {
+        return numberofbedrooms;
+    }
+
+    /**
+     * @param numberofbedrooms the numberofbedrooms to set
+     */
+    public void setNumberofbedrooms(int numberofbedrooms) {
+        this.numberofbedrooms = numberofbedrooms;
+    }
+
+    /**
+     * @return the numberofbathrooms
+     */
+    public int getNumberofbathrooms() {
+        return numberofbathrooms;
+    }
+
+    /**
+     * @param numberofbathrooms the numberofbathrooms to set
+     */
+    public void setNumberofbathrooms(int numberofbathrooms) {
+        this.numberofbathrooms = numberofbathrooms;
+    }
+
+    /**
+     * @return the numberofotherrooms
+     */
+    public int getNumberofotherrooms() {
+        return numberofotherrooms;
+    }
+
+    /**
+     * @param numberofotherrooms the numberofotherrooms to set
+     */
+    public void setNumberofotherrooms(int numberofotherrooms) {
+        this.numberofotherrooms = numberofotherrooms;
+    }
+
+    /**
+     * @return the minrent
+     */
+    public double getMinrent() {
+        return minrent;
+    }
+
+    /**
+     * @param minrent the minrent to set
+     */
+    public void setMinrent(double minrent) {
+        this.minrent = minrent;
+    }
+
+    /**
+     * @return the maxrent
+     */
+    public double getMaxrent() {
+        return maxrent;
+    }
+
+    /**
+     * @param maxrent the maxrent to set
+     */
+    public void setMaxrent(double maxrent) {
+        this.maxrent = maxrent;
+    }
+
+    /**
+     * @return the location
+     */
+    public List<String> getLocation() {
+        return location;
+    }
+
+    /**
+     * @param location the location to set
+     */
+    public void setLocation(List<String> location) {
+        this.location = location;
     }
     
 }

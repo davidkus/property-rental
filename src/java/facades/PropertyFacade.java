@@ -82,6 +82,63 @@ public class PropertyFacade extends BaseFacade {
         return performQueryList(Property.class, query);
     }
     
+    public List<Property> getByEverything(List<String> location, String type, int numberofbedrooms, int numberofbathrooms,
+            int numberofotherrooms, double minrent, double maxrent, String orderBy, boolean ascending, EntityManager em) {
+        String queryString = "SELECT p FROM Property p WHERE p.status = :status";
+        
+        // Find out what we need to search with
+        if(location != null && location.size() > 0)
+            queryString += " AND p.location in :location";
+        if(type != null)
+            queryString += " AND p.type = :type";
+        if(numberofbedrooms > 0)
+            queryString += " AND p.numberOfBedrooms = :numberofbedrooms";
+        if(numberofbathrooms > 0)
+            queryString += " AND p.numberOfBathrooms = :numberofbathrooms";
+        if(numberofotherrooms > 0)
+            queryString += " AND p.numberOtherRooms = :numberofotherrooms";
+        if(minrent > 0)
+            queryString += " AND p.rent >= :minrent";
+        if(maxrent > 0)
+            queryString += " AND p.rent <= :maxrent";
+        
+        if (orderBy.equals("bedrooms")) {
+            queryString += "  ORDER BY p.numberOfBedrooms ";
+        } else if (orderBy.equals("bathrooms")) {
+            queryString += "  ORDER BY p.numberOfBathrooms ";
+        } else if (orderBy.equals("otherrooms")) {
+            queryString += "  ORDER BY p.numberOtherRooms ";
+        } else {
+            queryString += "  ORDER BY p.rent ";
+        }
+        
+        if (ascending) {
+            queryString += "ASC";
+        } else {
+            queryString += "DESC";
+        }
+        
+        Query query = em.createQuery(queryString);
+                
+        query.setParameter("status", "Active");
+        if(location != null && location.size() > 0)
+            query.setParameter("location", location);
+        if(type != null)
+            query.setParameter("type", type);
+        if(numberofbedrooms > 0)
+            query.setParameter("numberofbedrooms", numberofbedrooms);
+        if(numberofbathrooms > 0)
+            query.setParameter("numberofbathrooms", numberofbathrooms);
+        if(numberofotherrooms > 0)
+            query.setParameter("numberofotherrooms", numberofotherrooms);
+        if(minrent > 0)
+            query.setParameter("minrent", minrent);
+        if(maxrent > 0)
+            query.setParameter("maxrent", maxrent);
+        
+        return performQueryList(Property.class, query);
+    }
+    
     public List<Property> getOwnerProperties(Owner owner, String orderBy, boolean ascending, EntityManager em) {
         String queryString = "SELECT p FROM Property p WHERE p.owner = :owner";
         

@@ -20,6 +20,8 @@ public class GreaterThanZeroValidator implements Validator {
     public void validate(FacesContext context,
                         UIComponent component,
                         Object value)  throws ValidatorException {
+        if(value == null)
+            return;
         try {
             if( value instanceof Double ) {
                 double val = (double)value;

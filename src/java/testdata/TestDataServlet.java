@@ -98,12 +98,15 @@ public class TestDataServlet extends HttpServlet {
     
     private void createOwnerProperties(Owner owner, int numberOfProperties) {
         Random rand = new Random();
+        String[] locations = {"Toronto", "Ottawa", "Kingston", "Montreal", "Kitchener",
+                                "Windsor", "London", "Belleville", "Other"};
         for( int i = 0; i < numberOfProperties; i++ ) {
             Address address = createAddress();
             Property property = new Property();
             property.setAddress(address);
             property.setOwner(owner);
-            property.setLocation("Canada");
+            
+            property.setLocation(locations[rand.nextInt(9)]);
             property.setNumberOfBathrooms((long)rand.nextInt(10) + 1);
             property.setNumberOfBedrooms((long)rand.nextInt(10) + 1);
             property.setNumberOtherRooms((long)rand.nextInt(10) + 1);
