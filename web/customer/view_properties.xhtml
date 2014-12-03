@@ -17,11 +17,12 @@
                 <h:form id="pagedResults">
                     
                     <c:if test="#{viewPropertiesBean.propertyCount == 0}" >
-                        <h1>There are no properties to display.</h1>
+                        <h2>There are no properties to display.</h2>
                     </c:if>
                     
                     <br/>
                     
+                    <c:if test="#{viewPropertiesBean.propertyCount > 0}" >
                     <h:outputLabel for="orderBy" value="Order By:" />
                     <h:selectOneMenu id="orderBy" value="#{viewPropertiesBean.orderBy}">
                         <f:selectItem itemValue="rent" itemLabel="Rent" />
@@ -101,7 +102,7 @@
                         <h:outputText style="color:royalblue; font-size: large;
                                       font-weight: bold" id="status" value="#{viewPropertiesBean.status}"/>
                     </div>
-                    
+                    </c:if>
                 </h:form>
             </f:view>
             
